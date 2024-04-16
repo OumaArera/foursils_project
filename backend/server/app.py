@@ -1,29 +1,36 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
-from flask_cors import CORS
-import os
-from flask_jwt_extended import JWTManager
-from days.day import day_bp
+from flask import request, session, make_response, jsonify
+from flask_restful import Api, Resource
+from sqlalchemy.exc import IntegrityError
 
-app = Flask(__name__)
+from config import app, db
+from models import User,  Module, Course, CourseEnrolled, Note,  Lecture
 
-# Configure the app
-app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["JWT_SECRET_KEY"] = os.environ.get("SECRET_KEY")
+api = Api(app)
+
+@app.route('/')
+def index():
+    return '<h1>Foursils Learning Backend</h1>'
+
+class Days(Resource):
+
+    @app.route('/days', methods=["GET"])
+    def get_days():
+        days = User.query.all()
+        days_list = []
+
+        # if days:
+
+        #     days_list = [{"id": day.id, "title": day.title, "course_id": day.course_id,} for day in days]
+            
+        # else:
+        #     return jsonify({"error": "There are no days."})
+        
+        return jsonify(days), 200
 
 
-db = SQLAlchemy(app)  
-migrate = Migrate(app, db)  
-jwt = JWTManager(app) 
 
-
-app.register_blueprint(day_bp)
-
-
-CORS(app, origins="*")
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
