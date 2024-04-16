@@ -1,60 +1,32 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
-from flask_migrate import Migrate
 from datetime import datetime
+from sqlalchemy_serializer import SerializerMixin
+from config import db
 
 db = SQLAlchemy()
-migrate = Migrate()
 
 
-class Registration(db.Model):
-    __tablename__ = "register"
+class User(db.Model, SerializerMixin):
+    __tablename__ = "user"
 
     id = db.Column(db.Integer, primary_key=True)
+    role = db.Column(db.String(20), nullable=False)
     first_name = db.Column(db.String(100), nullable=False)
     middle_name = db.Column(db.String(100), nullable=True)
     last_name = db.Column(db.String(100), nullable=False)
     username = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
-    role = db.Column(db.String(20), nullable=False) 
     reg_number = db.Column(db.String(20), nullable=True)
     staff_number = db.Column(db.String(20), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
-    user = db.relationship('User', back_populates='registration')
-    register = db.relationship("CourseEnrolled", back_populates = "registration")
-    course_enrolled = db.relationship("CourseEnrolled", back_populates="registration")
-
-
-class Authentication(db.Model):
-    __tablename__ = "authentication"
-
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
     last_login = db.Column(db.DateTime, default=datetime.utcnow)
-    user = db.relationship('User', back_populates='authentication')
-
-
-class User(db.Model):
-    __tablename__ = "user"
-
-    id = db.Column(db.Integer, primary_key=True)
-    role = db.Column(db.String(20), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    registration_id = db.Column(db.Integer, ForeignKey('registration.id'), nullable=False)
-    registration = db.relationship('Registration', back_populates='user')
-    authentication_id = db.Column(db.Integer, ForeignKey('authentication.id'), nullable=False)
-    authentication = db.relationship('Authentication', back_populates='user')
-    # courses_enrolled = db.relationship('CourseEnrolled', back_populates='user')
     courses_taught = db.relationship('Course', back_populates='instructor', lazy=True)
-    course_enrolled = db.relationship('CourseEnrolled', back_populates='user')  # Add this line
+    course_enrolled = db.relationship('CourseEnrolled', back_populates='user', foreign_keys='CourseEnrolled.user_id')
 
 
-# --------- FIRST PHASE -------------
-class Course(db.Model):
+class Course(db.Model, SerializerMixin):
     __tablename__ = "course"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -67,8 +39,7 @@ class Course(db.Model):
     students_enrolled = db.relationship('CourseEnrolled', back_populates='course', lazy=True)
     modules = db.relationship('Module', backref='course', lazy=True)
 
-
-class Module(db.Model):
+class Module(db.Model, SerializerMixin):
     __tablename__ = "module"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -76,22 +47,10 @@ class Module(db.Model):
     description = db.Column(db.Text, nullable=False)
     order = db.Column(db.Integer, nullable=False)
     course_id = db.Column(db.Integer, ForeignKey('course.id'), nullable=False)
-    day_id = db.Column(db.Integer, ForeignKey('day.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    day = db.relationship('Day', back_populates='modules')
 
-
-class Day(db.Model):
-    __tablename__ = "day"
-
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    course_id = db.Column(db.Integer, ForeignKey('course.id'), nullable=False)
-    modules = db.relationship('Module', back_populates='day', lazy=True)
-
-
-class Lecture(db.Model):
+class Lecture(db.Model, SerializerMixin):
     __tablename__ = "lecture"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -101,10 +60,8 @@ class Lecture(db.Model):
     module_id = db.Column(db.Integer, ForeignKey('module.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    notes = db.relationship('Note', back_populates='lecture')
 
-
-class Note(db.Model):
+class Note(db.Model, SerializerMixin):
     __tablename__ = "notes"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -113,53 +70,18 @@ class Note(db.Model):
     lecture_id = db.Column(db.Integer, ForeignKey('lecture.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    lecture = db.relationship('Lecture', back_populates='notes')
 
-# -----------SECOND PHASHE ------------
-
-class Assignments(db.Model):
-    __tablename__ = "assignments"
-
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    due_date = db.Column(db.DateTime, nullable=False)
-    type = db.Column(db.String(20), nullable=False)  
-    module_id = db.Column(db.Integer, ForeignKey('module.id'), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-
-
-class Choice(db.Model):
-    __tablename__ = "choices"
-
-    id = db.Column(db.Integer, primary_key=True)
-    question_id = db.Column(db.Integer, db.ForeignKey('questions.id'), nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    is_correct = db.Column(db.Boolean, default=False, nullable=False)
-
-class AssignmentPerformance(db.Model):
-    __tablename__ = "assignment_performance"
-
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
-    assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'), nullable=False)
-    score = db.Column(db.Float, nullable=False)
-
-
-class CourseEnrolled(db.Model):
+class CourseEnrolled(db.Model, SerializerMixin):
     __tablename__ = "course_enrolled"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
-    course_id = db.Column(db.Integer, ForeignKey('course.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
     enrollment_date = db.Column(db.DateTime, default=datetime.utcnow)
-    # student = db.relationship('User', back_populates='courses_enrolled')
+    registration_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  
+    registration = db.relationship('User', backref='enrolled_courses', foreign_keys=[registration_id])
     course = db.relationship('Course', back_populates='students_enrolled')
-    registration = db.relationship("Registration", back_populates="course_enrolled")
-    reg_id = db.Column(db.Integer, ForeignKey("register.id"), nullable=False)
-    user = db.relationship('User', back_populates='course_enrolled')
-
+    user = db.relationship('User', back_populates='course_enrolled', foreign_keys=[user_id])
 
 
 
