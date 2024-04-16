@@ -22,6 +22,7 @@ class Registration(db.Model):
     staff_number = db.Column(db.String(20), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     user = db.relationship('User', back_populates='registration')
+    register = db.relationship("CourseEnrolled", back_populates = "registration")
 
 
 class Authentication(db.Model):
@@ -47,7 +48,7 @@ class User(db.Model):
     authentication = db.relationship('Authentication', back_populates='user')
     courses_enrolled = db.relationship('CourseEnrolled', back_populates='user')
 
-
+# --------- FIRST PHASE -------------
 class Course(db.Model):
     __tablename__ = "course"
 
@@ -108,6 +109,7 @@ class Notes(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     lecture = db.relationship('Lecture', back_populates='notes')
 
+# -----------SECOND PHASHE ------------
 
 class Assignments(db.Model):
     __tablename__ = "assignments"
@@ -169,5 +171,8 @@ class CourseEnrolled(db.Model):
     enrollment_date = db.Column(db.DateTime, default=datetime.utcnow)
     student = db.relationship('User', back_populates='courses_enrolled')
     course = db.relationship('Course', back_populates='students_enrolled')
+    registration = db.relationship("Registration", back_populates="course_enrolled")
+    reg_id = db.Column(db.Integer, ForeignKey("register.id"), nullable=False)
+
 
 
