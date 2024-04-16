@@ -21,8 +21,10 @@ class Registration(db.Model):
     reg_number = db.Column(db.String(20), nullable=True)
     staff_number = db.Column(db.String(20), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
     user = db.relationship('User', back_populates='registration')
     register = db.relationship("CourseEnrolled", back_populates = "registration")
+    course_enrolled = db.relationship("CourseEnrolled", back_populates="registration")
 
 
 class Authentication(db.Model):
@@ -46,7 +48,10 @@ class User(db.Model):
     registration = db.relationship('Registration', back_populates='user')
     authentication_id = db.Column(db.Integer, ForeignKey('authentication.id'), nullable=False)
     authentication = db.relationship('Authentication', back_populates='user')
-    courses_enrolled = db.relationship('CourseEnrolled', back_populates='user')
+    # courses_enrolled = db.relationship('CourseEnrolled', back_populates='user')
+    courses_taught = db.relationship('Course', back_populates='instructor', lazy=True)
+    course_enrolled = db.relationship('CourseEnrolled', back_populates='user')  # Add this line
+
 
 # --------- FIRST PHASE -------------
 class Course(db.Model):
@@ -71,6 +76,7 @@ class Module(db.Model):
     description = db.Column(db.Text, nullable=False)
     order = db.Column(db.Integer, nullable=False)
     course_id = db.Column(db.Integer, ForeignKey('course.id'), nullable=False)
+    day_id = db.Column(db.Integer, ForeignKey('day.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     day = db.relationship('Day', back_populates='modules')
@@ -98,7 +104,7 @@ class Lecture(db.Model):
     notes = db.relationship('Note', back_populates='lecture')
 
 
-class Notes(db.Model):
+class Note(db.Model):
     __tablename__ = "notes"
 
     id = db.Column(db.Integer, primary_key=True)
@@ -124,34 +130,13 @@ class Assignments(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
-class Choices(db.Model):
+class Choice(db.Model):
     __tablename__ = "choices"
 
     id = db.Column(db.Integer, primary_key=True)
-    question_id = db.Column(db.Integer, ForeignKey('question.id'), nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey('questions.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
     is_correct = db.Column(db.Boolean, default=False, nullable=False)
-
-
-class Questions(db.Model):
-    __tablename__ = "questions"
-
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.Text, nullable=False)
-    type = db.Column(db.String(20), nullable=False) 
-    choices = db.relationship('Choice', backref='question', lazy=True)
-    responses = db.relationship('Response', backref='question', lazy=True)
-
-
-class Responses(db.Model):
-    __tablename__ = "responses"
-
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
-    question_id = db.Column(db.Integer, db.ForeignKey('question.id'), nullable=False)
-    answer = db.Column(db.String(200), nullable=False)
-    is_correct = db.Column(db.Boolean, nullable=False)
-
 
 class AssignmentPerformance(db.Model):
     __tablename__ = "assignment_performance"
@@ -169,10 +154,12 @@ class CourseEnrolled(db.Model):
     user_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
     course_id = db.Column(db.Integer, ForeignKey('course.id'), nullable=False)
     enrollment_date = db.Column(db.DateTime, default=datetime.utcnow)
-    student = db.relationship('User', back_populates='courses_enrolled')
+    # student = db.relationship('User', back_populates='courses_enrolled')
     course = db.relationship('Course', back_populates='students_enrolled')
     registration = db.relationship("Registration", back_populates="course_enrolled")
     reg_id = db.Column(db.Integer, ForeignKey("register.id"), nullable=False)
+    user = db.relationship('User', back_populates='course_enrolled')
+
 
 
 
