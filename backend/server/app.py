@@ -357,12 +357,13 @@ def modify_module(id):
     
     data = request.get_json()
 
-    if "title" not in data or "description" not in data:
+    if "title" not in data or "description" not in data or "order" not in data:
         return jsonify({"Message": "Missing required data."})
     
     # Modify module
     module.title = data["title"]
     module.description = data["description"]
+    module.order = data["order"]
     module.updated_at = datetime.utcnow()
 
     try:
@@ -370,7 +371,111 @@ def modify_module(id):
         return jsonify({"Message": "Module modified successfully"}), 201
     
     except Exception as err:
+        db.session.rollback()
         return jsonify({"Message": f"There is an error modifying the module. {err}"}), 400
+
+
+@app.route("/user/lecture", methods=["GET"])
+@jwt_required()
+def get_all_lectures():
+    lectures = Lecture.query.all()
+
+    if not lectures:
+        return jsonify({"Message": "Lectures not available"}), 404
+    
+    lectures_list = [{
+        "id": lecture.id,
+        "title": lecture.title,
+        "video_url": lecture.video_url,
+        "duration": lecture.duration,
+        "module_id": lecture.module_id,
+        "created_at": lecture.created_at,
+        "updated_at": lecture.updated_at
+
+    } for lecture in lectures]
+
+    response = make_response(
+        jsonify(lectures_list),
+        200
+    )
+    response.headers["Content-Type"] = "application/json"
+    return response
+
+
+@app.route("/user/create/lecture", methods=["POST"])
+@jwt_required()
+def create_new_lecture_video():
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"Message": "Invalid request."}), 404
+    
+    title = data.get("title")
+    video_url = data.get("video_url")
+    duration = data.get("duration")
+    module_id = data.get("module_id")
+    created_at =datetime.utcnow()
+    updated_at = datetime.utcnow()
+
+    if not title or not video_url or not duration or not module_id:
+        return jsonify({"Message": "Missing required data."}), 400
+    
+    new_lecture = Lecture(
+        title = title,
+        video_url = video_url,
+        duration = duration,
+        module_id = module_id,
+        created_at = created_at,
+        updated_at = updated_at
+    )
+
+    try:
+        db.session.add(new_lecture)
+        db.session.commit()
+        return jsonify({"Message": "Lecture created successfully."}), 200
+    
+    except Exception as err:
+        return jsonify({"Message": f"There was an error creating module. {err}"}), 400
+
+@app.route("/user/edit/lecture/<int:id>", methods=["PUT"])
+@jwt_required()
+def modify_lecture(id):
+
+    lecture = Lecture.query.get(id)
+
+    if not lecture:
+        return jsonify({"Message": "Invalid lecture."}), 404
+    
+    data = request.get_json()
+
+    if "title" not in data or "video_url" not in data or "duration" not in data:
+        return jsonify({"Message": "Missing required fields."}), 400
+    
+    lecture.title = data["title"]
+    lecture.video_url = data["video_url"]
+    lecture.duration = data["duration"]
+
+    try:
+        db.session.commit()
+        return jsonify({"Message": "Lecture modified successfully"}), 200
+    
+    except Exception as err:
+        db.session.rollback()
+        return jsonify({"Message": f"There was an error modifying the lecture. {err}"})
+    
+
+@app.route("/user/notes", methods=["GET"])
+@jwt_required()
+def get_all_notes():
+
+    notes = Note.query.all()
+
+    if not notes:
+        return jsonify({"Message": "Notes not available."}), 404
+    
+    notes_list = [{
+        
+    }]
 
 
 if __name__ == "__main__":
