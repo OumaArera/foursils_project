@@ -465,7 +465,7 @@ def modify_lecture(id):
     
 
 @app.route("/user/notes", methods=["GET"])
-@jwt_required()
+# @jwt_required()
 def get_all_notes():
 
     notes = Note.query.all()
@@ -474,8 +474,85 @@ def get_all_notes():
         return jsonify({"Message": "Notes not available."}), 404
     
     notes_list = [{
-        
-    }]
+        "id": note.id,
+        "topic": note.topic,
+        "content": note.content,
+        "lecture_id": note.lecture_id,
+        "created_at": note.created_at,
+        "updated_at": note.updated_at
+
+    } for note in notes]
+
+    response = make_response(
+        jsonify(notes_list),
+        200
+    )
+    response.headers["Content-Type"] = "application/json"
+
+    return response
+
+
+@app.route("/user/create/notes", methods=["POST"])
+# @jwt_required()
+def create_notes():
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"Message": "Invalid data"}), 404
+    
+    topic = data.get("topic")
+    content = data.get("content")
+    lecture_id = data.get("lecture_id")
+    created_at = datetime.utcnow()
+    updated_at = datetime.utcnow()
+
+    if not topic or not content or not lecture_id:
+        return jsonify({"Message": "Missing required data."}), 400
+    
+    new_notes = Note(
+        topic = topic,
+        content = content,
+        lecture_id = lecture_id,
+        created_at = created_at,
+        updated_at = updated_at
+    )
+
+    try:
+        db.session.add(new_notes)
+        db.session.commit()
+        return jsonify({"Message": "Notes created successfully"}), 200
+    
+    except Exception as err:
+        db.session.rollback()
+        return jsonify({"Message": f"There was an error createing notes. {err}"})
+
+
+@app.route("/user/modify/notes/<int:id>", methods=["PUT"])
+# @jwt_required()
+def modify_notes(id):
+    note = Note.query.get(id)
+
+    if not note:
+        return jsonify({"Message": "Notes not available"}), 404
+    
+    data = request.get_json()
+
+    if "topic" not in data or "content" not in data or "lecture_id" not in data:
+        return jsonify({"Message": "Missing required fields"}), 400
+    
+    note.topic = data["topic"]
+    note.content = data["content"]
+    note.lecture_id = data["lecture_id"]
+
+    try:
+        db.session.commit()
+        return jsonify({"Message": "Notes modified successfully"}), 200
+    
+    except Exception as err:
+        db.session.rollback()
+        return jsonify({"Message": f"There was an error in modifyning notes {err}"})
+
+
 
 
 if __name__ == "__main__":
