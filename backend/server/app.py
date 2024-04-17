@@ -9,7 +9,6 @@ from flask_jwt_extended import JWTManager, jwt_required, create_access_token, ge
 from sqlalchemy.exc import IntegrityError
 from models import db
 from datetime import datetime
-from sqlalchemy import or_
 
 from models import User,  Module, Course, CourseEnrolled, Note,  Lecture
 
@@ -637,27 +636,24 @@ def enroll_for_a_course():
         db.session.rollback()
         return jsonify({"Message": f"There was a problem in enrolling. {err}"}), 400
 
-from sqlalchemy import or_
 
 @app.route("/user/search/courses/<string:query>", methods=["GET"])
-@jwt_required()
-def search_course_by_name_or_description(query):
-    # Split the query string into individual words
-    keywords = query.split()
+# @jwt_required()
+def search_course_by_name(query):
+    # Split the query string into individual words and convert them to lowercase
+    query_words = query.lower().split()
 
     # Initialize an empty list to store the search results
     search_results = []
 
-    # Iterate over each keyword and search for courses that match any of them
-    for keyword in keywords:
-        # Query courses where the title or description contains the keyword
-        courses = Course.query.filter(or_(Course.title.ilike(f"%{keyword}%"), Course.description.ilike(f"%{keyword}%"))).all()
+    # Iterate over each course and search for courses that exactly match any of the query words
+    for course in Course.query.all():
+        # Split the course title into individual words and convert them to lowercase
+        title_words = course.title.lower().split()
 
-        # Add the matching courses to the search results
-        search_results.extend(courses)
-
-    # Remove duplicate courses from the search results
-    search_results = list(set(search_results))
+        # Check if any of the query words exactly match any of the title words
+        if any(query_word == title_word for query_word in query_words for title_word in title_words):
+            search_results.append(course)
 
     if not search_results:
         return jsonify({"Message": f"No matches for {query}"}), 404
@@ -678,6 +674,7 @@ def search_course_by_name_or_description(query):
     response.headers["Content-Type"] = "application/json"
 
     return response
+
 
 
 
