@@ -36,7 +36,6 @@ api = Api(app)
 def index():
     return '<h1>Foursils Learning Backend</h1>'
 
-# class Days(Resource):
 
 @app.route('/user', methods=["GET"])
 def get_users():
@@ -465,7 +464,7 @@ def modify_lecture(id):
     
 
 @app.route("/user/notes", methods=["GET"])
-# @jwt_required()
+@jwt_required()
 def get_all_notes():
 
     notes = Note.query.all()
@@ -493,7 +492,7 @@ def get_all_notes():
 
 
 @app.route("/user/create/notes", methods=["POST"])
-# @jwt_required()
+@jwt_required()
 def create_notes():
     data = request.get_json()
 
@@ -528,7 +527,7 @@ def create_notes():
 
 
 @app.route("/user/modify/notes/<int:id>", methods=["PUT"])
-# @jwt_required()
+@jwt_required()
 def modify_notes(id):
     note = Note.query.get(id)
 
@@ -551,6 +550,91 @@ def modify_notes(id):
     except Exception as err:
         db.session.rollback()
         return jsonify({"Message": f"There was an error in modifyning notes {err}"})
+
+
+@app.route("/user/courses/enrolled", methods=["GET"])
+@jwt_required()
+def get_all_enrolled_courses():
+
+    enrolled_courses_data = CourseEnrolled.query.all()
+
+    if not enrolled_courses_data:
+        return jsonify({"Message": f"You have not enrolled in any course"}), 404
+    
+    enrolled_courses_list = []
+    for course_enrolled in enrolled_courses_data:
+        # Fetch course details
+        course = Course.query.get(course_enrolled.course_id)
+        # Fetch student details
+        student = User.query.get(course_enrolled.user_id)
+
+        student_name = f"{student.first_name} {student.last_name}"
+        if student.middle_name is not None:
+            student_name = f"{student.first_name} {student.middle_name} {student.last_name}"
+
+        enrolled_courses_list.append({
+            "id": course_enrolled.id,
+            "user_id": course_enrolled.user_id,
+            "course_id": course_enrolled.course_id,
+            "enrollment_date": course_enrolled.enrollment_date,
+            "registration_id": course_enrolled.registration_id,
+            "course_title": course.title,
+            "student_name": student_name,
+            "student_email": student.email
+        })
+
+    response = make_response(
+        jsonify(enrolled_courses_list),
+        200
+    )
+    response.headers["Content-Type"] = "application/json"
+
+    return response
+
+@app.route("/user/enroll", methods=["POST"])
+@jwt_required()
+def enroll_for_a_course():
+
+    data = request.get_json()
+
+    if "course_id" not in data or "user_id" not in data:
+        return jsonify({"Message": "Invalid data"}), 404
+    
+    """
+    - Create a form that has two inputs
+    - One, to fetch user.id from the user data you stored in localStorage
+    - Two, to store course id. 
+    - When user clicks on "enroll" button, collect courses.id and send it together with users.id to backend
+    """
+    
+    course_id = data.get("course_id")
+    user_id = data.get("user_id")
+    registration_id = data.get("course_id")
+    enrollment_date = datetime.utcnow()
+
+    existing_enrollment = CourseEnrolled.query.filter_by(course_id=course_id, user_id=user_id).first()
+    if existing_enrollment:
+        return jsonify({"Message": "You are already enrolled in this course."}), 400
+
+    if not course_id or not user_id or not registration_id:
+        return jsonify({"Message": "Missing required data."}), 404
+
+    # Create course
+    new_course = CourseEnrolled(
+        course_id = course_id,
+        user_id = user_id,
+        registration_id = registration_id,
+        enrollment_date = enrollment_date
+    )
+
+    try:
+        db.session.add(new_course)
+        db.session.commit()
+        return jsonify({"Message": "Enrolled successfully"}), 200
+    
+    except Exception as err:
+        db.session.rollback()
+        return jsonify({"Message": f"There was a problem in enrolling. {err}"}), 400
 
 
 
