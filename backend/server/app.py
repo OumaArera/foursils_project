@@ -7,7 +7,6 @@ from flask_restful import Api
 # from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
-from jsonpatch import apply_patch
 from models import db
 from datetime import datetime
 
@@ -163,6 +162,7 @@ def get_user_profile():
     
 
 @app.route("/user/delete/<int:id>", methods=["DELETE"])
+@jwt_required()
 def delete_user(id):
 
     user = User.query.get(id)
@@ -191,7 +191,7 @@ def delete_user(id):
 #     pass
 
 @app.route("/user/courses", methods=["GET"])
-# @jwt_required()
+@jwt_required()
 def get_all_courses():
 
     courses = Course.query.all()
@@ -286,7 +286,91 @@ def modify_course(id):
         return jsonify({"Message": f"There was an error in modifying the course. {err}"}), 400
 
 
+@app.route("/user/module", methods=["GET"])
+@jwt_required()
+def get_modules():
+    modules = Module.query.all()
 
+    if not modules:
+        return jsonify({"Message": "Module not available."}), 404
+    
+    modules_list = [{
+        "id": module.id,
+        "title": module.title,
+        "description": module.description,
+        "order": module.order,
+        "course_id": module.course_id,
+        "created_at": module.created_at,
+        "updated_at": module.updated_at
+
+    } for module in modules]
+
+    response = make_response(
+        jsonify(modules_list),
+        200
+    )
+    response.headers["Content-Type"] = "application/json"
+    return response
+
+@app.route("/user/create/module", methods=["POST"])
+@jwt_required()
+def create_modules():
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"Message": "Invalid data."}), 400
+    
+    title = data.get("title")
+    description = data.get("description")
+    order = data.get("order")
+    course_id = data.get("course_id")
+    created_at = datetime.utcnow()
+    updated_at = datetime.utcnow()
+
+    if not title or not description or not order or not course_id:
+        return jsonify({"Message": "Missing required data."}),400
+    
+    new_module = Module(
+        title = title,
+        description = description,
+        order = order,
+        course_id = course_id,
+        created_at = created_at,
+        updated_at = updated_at
+    )
+
+    try:
+        db.session.add(new_module)
+        db.session.commit()
+        return jsonify({"Message": "Module created successfully"}), 201
+    except Exception as err:
+        return jsonify({"Message": f"There was an error creating the module. {err}"})
+
+
+@app.route("/user/modify/module/<int:id>", methods=["PUT"])
+@jwt_required()
+def modify_module(id):
+    module = Module.query.get(id)
+
+    if not module:
+        return jsonify({"Message": "Module not available"}), 400
+    
+    data = request.get_json()
+
+    if "title" not in data or "description" not in data:
+        return jsonify({"Message": "Missing required data."})
+    
+    # Modify module
+    module.title = data["title"]
+    module.description = data["description"]
+    module.updated_at = datetime.utcnow()
+
+    try:
+        db.session.commit()
+        return jsonify({"Message": "Module modified successfully"}), 201
+    
+    except Exception as err:
+        return jsonify({"Message": f"There is an error modifying the module. {err}"}), 400
 
 
 if __name__ == "__main__":
