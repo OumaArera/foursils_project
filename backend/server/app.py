@@ -9,6 +9,7 @@ from flask_jwt_extended import JWTManager, jwt_required, create_access_token, ge
 from sqlalchemy.exc import IntegrityError
 from models import db
 from datetime import datetime
+from sqlalchemy import or_
 
 from models import User,  Module, Course, CourseEnrolled, Note,  Lecture
 
@@ -190,7 +191,7 @@ def delete_user(id):
 #     pass
 
 @app.route("/user/courses", methods=["GET"])
-@jwt_required()
+# @jwt_required()
 def get_all_courses():
 
     courses = Course.query.all()
@@ -636,6 +637,47 @@ def enroll_for_a_course():
         db.session.rollback()
         return jsonify({"Message": f"There was a problem in enrolling. {err}"}), 400
 
+from sqlalchemy import or_
+
+@app.route("/user/search/courses/<string:query>", methods=["GET"])
+@jwt_required()
+def search_course_by_name_or_description(query):
+    # Split the query string into individual words
+    keywords = query.split()
+
+    # Initialize an empty list to store the search results
+    search_results = []
+
+    # Iterate over each keyword and search for courses that match any of them
+    for keyword in keywords:
+        # Query courses where the title or description contains the keyword
+        courses = Course.query.filter(or_(Course.title.ilike(f"%{keyword}%"), Course.description.ilike(f"%{keyword}%"))).all()
+
+        # Add the matching courses to the search results
+        search_results.extend(courses)
+
+    # Remove duplicate courses from the search results
+    search_results = list(set(search_results))
+
+    if not search_results:
+        return jsonify({"Message": f"No matches for {query}"}), 404
+    
+    courses_list = [{
+        "id": course.id,
+        "title": course.title,
+        "description": course.description,
+        "instructor_id": course.instructor_id,
+        "created_at": course.created_at,
+        "updated_at": course.updated_at
+    } for course in search_results]
+
+    response = make_response(
+        jsonify(courses_list),
+        200
+    )
+    response.headers["Content-Type"] = "application/json"
+
+    return response
 
 
 
