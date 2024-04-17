@@ -2,13 +2,15 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey
 from datetime import datetime
 from sqlalchemy_serializer import SerializerMixin
-from config import db
+# from flask_login 
+# from config import db
+# from config import app
 
 db = SQLAlchemy()
 
 
-class User(db.Model, SerializerMixin):
-    __tablename__ = "user"
+class User(db.Model):
+    __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True)
     role = db.Column(db.String(20), nullable=False)
@@ -25,60 +27,59 @@ class User(db.Model, SerializerMixin):
     courses_taught = db.relationship('Course', back_populates='instructor', lazy=True)
     course_enrolled = db.relationship('CourseEnrolled', back_populates='user', foreign_keys='CourseEnrolled.user_id')
 
-
-class Course(db.Model, SerializerMixin):
-    __tablename__ = "course"
+class Course(db.Model):
+    __tablename__ = "courses"
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=False)
-    instructor_id = db.Column(db.Integer, ForeignKey('user.id'), nullable=False)
+    instructor_id = db.Column(db.Integer, ForeignKey('users.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     instructor = db.relationship('User', back_populates='courses_taught', lazy=True)
     students_enrolled = db.relationship('CourseEnrolled', back_populates='course', lazy=True)
     modules = db.relationship('Module', backref='course', lazy=True)
 
-class Module(db.Model, SerializerMixin):
-    __tablename__ = "module"
+class Module(db.Model):
+    __tablename__ = "modules"
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     description = db.Column(db.Text, nullable=False)
     order = db.Column(db.Integer, nullable=False)
-    course_id = db.Column(db.Integer, ForeignKey('course.id'), nullable=False)
+    course_id = db.Column(db.Integer, ForeignKey('courses.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-class Lecture(db.Model, SerializerMixin):
-    __tablename__ = "lecture"
+class Lecture(db.Model):
+    __tablename__ = "lectures"
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
     video_url = db.Column(db.String(500), nullable=True)  
     duration = db.Column(db.String(20), nullable=False)
-    module_id = db.Column(db.Integer, ForeignKey('module.id'), nullable=False)
+    module_id = db.Column(db.Integer, ForeignKey('modules.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-class Note(db.Model, SerializerMixin):
+class Note(db.Model):
     __tablename__ = "notes"
 
     id = db.Column(db.Integer, primary_key=True)
     topic = db.Column(db.String(300), nullable=False)
     content = db.Column(db.Text, nullable=False)
-    lecture_id = db.Column(db.Integer, ForeignKey('lecture.id'), nullable=False)
+    lecture_id = db.Column(db.Integer, ForeignKey('lectures.id'), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-class CourseEnrolled(db.Model, SerializerMixin):
-    __tablename__ = "course_enrolled"
+class CourseEnrolled(db.Model):
+    __tablename__ = "courses_enrolled"
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'), nullable=False)
     enrollment_date = db.Column(db.DateTime, default=datetime.utcnow)
-    registration_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  
+    registration_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)  
     registration = db.relationship('User', backref='enrolled_courses', foreign_keys=[registration_id])
     course = db.relationship('Course', back_populates='students_enrolled')
     user = db.relationship('User', back_populates='course_enrolled', foreign_keys=[user_id])
