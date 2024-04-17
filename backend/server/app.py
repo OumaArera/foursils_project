@@ -7,6 +7,7 @@ from flask_restful import Api
 # from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
+from jsonpatch import apply_patch
 from models import db
 from datetime import datetime
 
@@ -214,14 +215,13 @@ def get_all_courses():
     else:
         return jsonify({"Error": "There are no courses avavilable"}), 201
 
-
 @app.route("/user/create/courses", methods=["POST"])
-# @jwt_required()
+@jwt_required()
 def create_course():
     data = request.get_json()
     
     if not data:
-        return jsonify({"Message": "Invalid request."})
+        return jsonify({"Message": "Invalid request."}), 400
     
     title = data.get("title")
     description = data.get("description")
@@ -243,12 +243,51 @@ def create_course():
     try:
         db.session.add(new_course)
         db.session.commit()
-        return jsonify({"Message": "Courses Create Successfully"})
+        return jsonify({"Message": "Courses Create Successfully"}), 201
     
     except Exception as err:
         db.session.rollback()
-        return jsonify({"Error": f"There was an error creating the course. {err}"})
+        return jsonify({"Error": f"There was an error creating the course. {err}"}), 400
     
+
+@app.route("/user/edit/course/<int:id>", methods=["PUT"])
+@jwt_required()
+def modify_course(id):
+    course = Course.query.get(id)
+
+    if not course:
+        return jsonify({"Message": "Course does not exist."}), 404
+    
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"Message": "Invalid data"}), 400
+    
+    # Check if 'title' and 'description' are present in the data
+    if 'title' not in data or 'description' not in data:
+        return jsonify({"Message": "Title and description are required fields"}), 400
+    
+    """"
+    _ Create a form that takes in new title and new description.
+    - In case one of them is not being used, use the previous
+    """
+
+    # Update course title and description
+    course.title = data['title']
+    course.description = data['description']
+    course.updated_at = datetime.utcnow()
+
+    try:
+        db.session.commit()
+        return jsonify({"Message": "Course modified successfully"}), 200
+    
+    except Exception as err:
+        db.session.rollback()
+        return jsonify({"Message": f"There was an error in modifying the course. {err}"}), 400
+
+
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
