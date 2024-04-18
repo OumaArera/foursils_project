@@ -1,15 +1,15 @@
 import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom"; // Importing useHistory from react-router-dom
+import { useNavigate } from "react-router-dom"; // Importing useHistory from react-router-dom
 
 function Logout() {
-    const history = useHistory(); // Getting the history object
+    const navigate = useNavigate(); // Getting the history object
 
     const handleLogout = () => {
         // Clear the authentication state by removing the token from localStorage
-        localStorage.removeItem('token');
+        localStorage.removeItem('access_token');
         
         // Redirect the user to the login page
-        history.push('/login');
+        navigate('/login');
     };
 
     useEffect(() => {

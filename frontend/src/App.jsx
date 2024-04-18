@@ -5,7 +5,7 @@ import Navbar from './Navbar';
 import Register from "./Register";
 import Login from './Login';
 import Home from './Home';
-//import Logout from './Logout'
+import Logout from './Logout'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App({onLogin}) { 
@@ -22,7 +22,7 @@ function App({onLogin}) {
           <Route path ='/' element={isLogged && <Home />}/> 
           <Route path ='/Register' element={!isLogged && <Register />}/>
           <Route path ='/Login' element={!isLogged && <Login onLogin={handleLogin}/>} />
-          {/* <Route path ='/Logout' element={<Logout />}/> */}
+          <Route path ='/Logout' element={<Logout />}/>
         </Routes>
       </div>
     </Router>

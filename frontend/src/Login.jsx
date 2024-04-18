@@ -72,7 +72,7 @@ function Login({onLogin}) {
         // Assuming the server responds with a token upon successful login
         const data = await response.json();
         // Set the token in a cookie with expiry date
-        localStorage.setItem('token', data.token)
+        localStorage.setItem('access_token', JSON.stringify(data))
 
         setIsLoggedIn(true);
   

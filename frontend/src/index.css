@@ -151,7 +151,7 @@ input[type='text'],
 input[type='email'],
 input[type='password'],
 select {
-  width: 100%;
+  width: 70%;
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -160,7 +160,7 @@ select {
 }
 
 .reg-stuff {
-  width: 100%;
+  width: 60%;
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
