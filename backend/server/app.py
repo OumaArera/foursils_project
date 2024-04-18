@@ -9,6 +9,7 @@ from flask_jwt_extended import JWTManager, jwt_required, create_access_token, ge
 from sqlalchemy.exc import IntegrityError
 from models import db
 from datetime import datetime
+from flask_login import  logout_user
 
 from models import User,  Module, Course, CourseEnrolled, Note,  Lecture
 
@@ -147,7 +148,14 @@ def signin():
     user.last_login = datetime.utcnow()
     db.session.commit()
 
-    return jsonify({"message": "Login successful", "access_token": access_token}), 200
+    return jsonify({
+        "message": "Login successful", 
+        "access_token": access_token, 
+        "user_id": user.id,
+        "role": user.role,
+        "username": user.username
+        } 
+        ), 200
 
 @app.route("/user/profile", methods=["GET"])
 @jwt_required()
@@ -464,7 +472,7 @@ def modify_lecture(id):
     
 
 @app.route("/user/notes", methods=["GET"])
-@jwt_required()
+# @jwt_required()
 def get_all_notes():
 
     notes = Note.query.all()
