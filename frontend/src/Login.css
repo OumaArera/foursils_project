@@ -1,0 +1,39 @@
+#logout-btn{
+    right: 100px;
+    top: 150px;
+    position: absolute;
+    color: red;
+    font-size: 1.6vw;
+}
+
+#course-crt{
+    right: 100px;
+    top: 250px;
+    position: absolute;
+    color: red;
+    font-size: 1.6vw;
+}
+
+#module-crt{
+    right: 100px;
+    top: 350px;
+    position: absolute;
+    color: red;
+    font-size: 1.6vw;
+}
+
+#lecture-crt{
+    right: 100px;
+    top: 450px;
+    position: absolute;
+    color: red;
+    font-size: 1.6vw;
+}
+
+#notes-crt{
+    right: 100px;
+    top: 550px;
+    position: absolute;
+    color: red;
+    font-size: 1.6vw;
+}
