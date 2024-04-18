@@ -10,16 +10,19 @@ function Register() {
     setUserType(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+
+  //   // Here you can submit the form data to your backend API
+  //   console.log(formData);
+  //   // Reset the form after submission if needed
+  //   setFormData({});
+  // };
+
+  const registerUser = async e => {
+
     e.preventDefault();
 
-    // Here you can submit the form data to your backend API
-    console.log(formData);
-    // Reset the form after submission if needed
-    setFormData({});
-  };
-
-  const registerUser = async () => {
     const userdata = {
       'role': userType,
       'first_name': formData.first_name,
@@ -42,6 +45,13 @@ function Register() {
         },
         body: JSON.stringify(userdata)
     })
+    if (response.ok){
+      const data = await response.json()
+      console.log(data)
+
+    }else{
+      console.log("There was an error")
+    }
     }
     catch (error) {
       console.log(error)
@@ -131,6 +141,7 @@ function Register() {
 
       <label htmlFor="password_confirmation">Confirm Password:</label>
       <input
+
         type="password_confirmation"
         id="password_confirmation"
         name="password_confirmation"
@@ -172,6 +183,16 @@ function Register() {
         value={formData.last_name || ''}
         onChange={handleChange}
       />
+      
+      <br />
+      <label htmlFor="staff_number">Staff Number:</label>
+      <input
+        type="text"
+        id="staff_number"
+        name="staff_number"
+        value={formData.staff_number || ''}
+        onChange={handleChange}
+      />
       <br />
       <label htmlFor="username">Username:</label>
       <input
@@ -200,14 +221,16 @@ function Register() {
         onChange={handleChange}
       />
       <br />
-      <label htmlFor="staff_number">Staff Number:</label>
+      <label htmlFor="password_confirmation">Confirm Password:</label>
       <input
-        type="text"
-        id="staff_number"
-        name="staff_number"
-        value={formData.staff_number || ''}
+        className='confirm'
+        type="password_confirmation"
+        id="password_confirmation"
+        name="password_confirmation"
+        value={formData.password_confirmation || ''}
         onChange={handleChange}
       />
+      
       
     </>
   );
@@ -223,11 +246,11 @@ function Register() {
           <option value="instructor">Instructor</option>
         </select>
       </div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={registerUser}>
         {userType === 'student' && studentFormFields}
         {userType === 'instructor' && instructorFormFields}
         <br />
-        <button onclick={registerUser} type="submit">Register</button>
+        <button type="submit">Register</button>
       </form>
     </div>
   );
