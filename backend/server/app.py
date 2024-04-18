@@ -734,7 +734,9 @@ def get_my_courses(id):
 
     return response
 
+my_name = "HIII"
 
+print(my_name)
 
 
 
