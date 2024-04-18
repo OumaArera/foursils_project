@@ -10,6 +10,7 @@ from sqlalchemy.exc import IntegrityError
 from models import db
 from datetime import datetime
 from flask_login import  logout_user
+from flask_cors import CORS
 
 from models import User,  Module, Course, CourseEnrolled, Note,  Lecture
 
@@ -31,6 +32,7 @@ jwt = JWTManager(app)
 bcrypt = Bcrypt(app)
 
 api = Api(app)
+CORS(app)
 
 
 @app.route('/')
@@ -83,7 +85,7 @@ def signup():
     password = data.get("password_hash")
     reg_number = data.get("reg_number")
     staff_number = data.get("staff_number")
-    last_login = data.get("last_login")
+    last_login = datetime.utcnow()
 
     user = User.query.filter_by(username=username).first()
     if user:
@@ -120,6 +122,9 @@ def signup():
         db.session.rollback()
         return jsonify({"error": f"Failed to create user. Error: {err}"}), 400
     
+
+
+
 @app.route("/user/signin", methods=["POST"])
 def signin():
     data = request.get_json()
@@ -157,6 +162,9 @@ def signin():
         } 
         ), 200
 
+
+
+
 @app.route("/user/profile", methods=["GET"])
 @jwt_required()
 def get_user_profile():
@@ -192,13 +200,9 @@ def delete_user(id):
         db.session.rollback()
         return jsonify({"Error": f"There was an error deleting user. {err}"}), 400
     
-# @app.route("/user/logout", methods=["POST"])
-# @jwt_required
-# def logout_user():
-#     pass
 
 @app.route("/user/courses", methods=["GET"])
-# @jwt_required()
+@jwt_required()
 def get_all_courses():
 
     courses = Course.query.all()
@@ -222,6 +226,9 @@ def get_all_courses():
     else:
         return jsonify({"Error": "There are no courses avavilable"}), 201
 
+
+
+
 @app.route("/user/create/courses", methods=["POST"])
 @jwt_required()
 def create_course():
@@ -236,7 +243,7 @@ def create_course():
     created_at = datetime.utcnow()
     updated_at = data.get("updated_at")
 
-    if not title or not description or not instructor_id or not created_at:
+    if not title or not description or not instructor_id:
         return jsonify({"Message": "Missing required fields"}), 400
     
     new_course = Course(
@@ -444,6 +451,9 @@ def create_new_lecture_video():
     except Exception as err:
         return jsonify({"Message": f"There was an error creating module. {err}"}), 400
 
+
+
+
 @app.route("/user/edit/lecture/<int:id>", methods=["PUT"])
 @jwt_required()
 def modify_lecture(id):
@@ -534,6 +544,8 @@ def create_notes():
         return jsonify({"Message": f"There was an error createing notes. {err}"})
 
 
+
+
 @app.route("/user/modify/notes/<int:id>", methods=["PUT"])
 @jwt_required()
 def modify_notes(id):
@@ -561,7 +573,7 @@ def modify_notes(id):
 
 
 @app.route("/user/courses/enrolled", methods=["GET"])
-@jwt_required()
+# @jwt_required()
 def get_all_enrolled_courses():
 
     enrolled_courses_data = CourseEnrolled.query.all()
@@ -684,10 +696,53 @@ def search_course_by_name(query):
     return response
 
 
+@app.route("/user/my/courses/<int:id>", methods=["GET"])
+@jwt_required()
+def get_my_courses(id):
+    # Query the CourseEnrolled table to get the enrolled courses for the specified user ID
+    enrolled_courses_data = CourseEnrolled.query.filter_by(user_id=id).all()
+
+    if not enrolled_courses_data:
+        return jsonify({"Message": "You have not enrolled in any course."}), 404
+    
+    # Initialize an empty list to store the details of enrolled courses
+    enrolled_courses_list = []
+
+    # Iterate over each enrolled course data
+    for course_enrolled in enrolled_courses_data:
+        # Fetch course details from the Course table
+        course = Course.query.get(course_enrolled.course_id)
+        if course:
+            # Append the details of the enrolled course to the list
+            enrolled_courses_list.append({
+                "id": course.id,
+                "title": course.title,
+                "description": course.description,
+                "instructor_id": course.instructor_id,
+                "created_at": course.created_at,
+                "updated_at": course.updated_at,
+                "enrollment_date": course_enrolled.enrollment_date,
+                "registration_id": course_enrolled.registration_id
+            })
+
+    # Create a response with the details of enrolled courses
+    response = make_response(
+        jsonify(enrolled_courses_list),
+        200
+    )
+    response.headers["Content-Type"] = "application/json"
+
+    return response
+
+
+
 
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+
 
 
 
