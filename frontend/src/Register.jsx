@@ -141,7 +141,7 @@ function Register() {
 
       <label htmlFor="password_confirmation">Confirm Password:</label>
       <input
-        className='confirm'
+
         type="password_confirmation"
         id="password_confirmation"
         name="password_confirmation"

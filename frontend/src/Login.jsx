@@ -69,9 +69,7 @@ function Login() {
     }
   };
 
-  const handleCreateCourse = () => {
-    setCreate(2);
-  };
+
 
   const handleCreateModule = () => {
     setCreate(3);

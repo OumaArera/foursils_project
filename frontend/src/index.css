@@ -92,17 +92,7 @@ select {
   box-sizing: border-box;
 }
 
-.reg-stuff {
-  width: 70%;
-  padding: 8px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
 
-.confirm {
-  width: 70%;
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
