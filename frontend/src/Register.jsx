@@ -29,7 +29,8 @@ function Register() {
       'email': formData.email,
       'staff_number': formData.password,
       'reg_number': formData.reg_number,
-      'password_hash': formData.password
+      'password_hash': formData.password,
+      'password_confirmation': formData.password_confirmation
     }
 
     try {
@@ -86,6 +87,19 @@ function Register() {
         onChange={handleChange}
       />
       <br />
+
+      <label htmlFor="reg_number">Registration Number:</label>
+      <input
+        className='reg-stuff'
+        type="reg_number"
+        id="reg_number"
+        name="reg_number"
+        value={formData.reg_number || ''}
+        onChange={handleChange}
+      />
+
+      <br />
+
       <label htmlFor="username">Username:</label>
       <input
         type="text"
@@ -105,23 +119,22 @@ function Register() {
       />
       <br />
 
-      <label htmlFor="reg_number">Registration Number:</label>
-      <input
-        className='reg-stuff'
-        type="reg_number"
-        id="reg_number"
-        name="reg_number"
-        value={formData.reg_number || ''}
-        onChange={handleChange}
-      />
-
-      <br />
       <label htmlFor="password">Password:</label>
       <input
         type="password"
         id="password"
         name="password"
         value={formData.password || ''}
+        onChange={handleChange}
+      />
+      <br />
+
+      <label htmlFor="password_confirmation">Confirm Password:</label>
+      <input
+        type="password_confirmation"
+        id="password_confirmation"
+        name="password_confirmation"
+        value={formData.password_confirmation || ''}
         onChange={handleChange}
       />
       <br />
