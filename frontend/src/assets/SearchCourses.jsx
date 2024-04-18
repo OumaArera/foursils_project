@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import Search from './Search';
+import React, { useState, useEffect } from 'react';
+// import Search from './Search';
 
 const SEARCH_URL ="http://127.0.0.1:5000/user/search/courses/"
 
@@ -15,8 +15,6 @@ const SearchCourses = () => {
       setTokenDetails(JSON.parse(token));
     }
   }, []);
-
-  
 
   const handleSearch = async (searchTerm) => {
     try {
@@ -41,7 +39,7 @@ const SearchCourses = () => {
   return (
     <div>
       <h1>Course Search</h1>
-      <Search onSearch={handleSearch} />
+      {/* <Search onSearch={handleSearch} /> */}
       <ul>
         {searchResults.length === 0 ? (
           <li>No matching courses found</li>
