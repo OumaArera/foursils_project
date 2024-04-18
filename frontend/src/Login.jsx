@@ -147,7 +147,7 @@ function Login() {
             <div>
 
               <div>
-                {<SearchCourses />}
+              {<SearchCourses />}
               {<CourseDetails />}
               </div>
               <button id = "course-crt" onClick={handleMyCourses}>My Courses</button>
