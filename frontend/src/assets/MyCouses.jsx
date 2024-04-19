@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 
-const MY_COURSES_URL = "http://127.0.0.1:5000/user/my/courses/"
+const MY_COURSES_URL = "http://127.0.0.1:5000/user/my/courses"
 
 const MyCourses = () => {
   const [courses, setCourses] = useState([]);
@@ -34,10 +34,12 @@ const MyCourses = () => {
                 'Authorization': `Bearer ${tokenDetails}`
             }
         });
+
         if (response.ok){
             const data = await response.json()
             setCourses(data)
         }
+        
       } catch (error) {
         console.error('Error fetching courses:', error);
         setLoading(false);

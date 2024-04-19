@@ -7,7 +7,7 @@ import CourseForm from "./assets/Course";
 import "./Login.css";
 import CourseDetails from "./assets/CoursesDisplay";
 import MyCourses from "./assets/MyCouses";
-import SearchCourses from "./assets/SearchCourses";
+// import SearchCourses from "./assets/SearchCourses";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -88,11 +88,13 @@ function Login() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     localStorage.removeItem("access_token");
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("role");
   };
 
   const handleMyCourses = () =>{
-    // setMyCourses(prevState => !prevState);
-    setMyCourses(true)
+    setMyCourses(prevState => !prevState);
+    // setMyCourses(true)
   }
 
   return (
@@ -147,11 +149,13 @@ function Login() {
             <div>
 
               <div>
-              {<SearchCourses />}
-              {<CourseDetails />}
+              {/* {<SearchCourses />} */}
+              {!myCourses && <CourseDetails />}
+                {myCourses && <MyCourses />}
               </div>
               <button id = "course-crt" onClick={handleMyCourses}>My Courses</button>
-              {myCourses && <MyCourses />}
+              {/* {myCourses ? "Show All Courses" : "My Courses"} */}
+              {/* {myCourses && <MyCourses />} */}
             </div>
           )}
         </div>
@@ -161,5 +165,7 @@ function Login() {
 }
 
 export default Login;
+
+
 
 
