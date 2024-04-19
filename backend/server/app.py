@@ -9,7 +9,7 @@ from flask_jwt_extended import JWTManager, jwt_required, create_access_token, ge
 from sqlalchemy.exc import IntegrityError
 from models import db
 from datetime import datetime
-from flask_login import  logout_user
+# from flask_login import  logout_user
 from flask_cors import CORS
 
 from models import User,  Module, Course, CourseEnrolled, Note,  Lecture
@@ -482,7 +482,7 @@ def modify_lecture(id):
     
 
 @app.route("/user/notes", methods=["GET"])
-# @jwt_required()
+@jwt_required()
 def get_all_notes():
 
     notes = Note.query.all()
@@ -573,7 +573,7 @@ def modify_notes(id):
 
 
 @app.route("/user/courses/enrolled", methods=["GET"])
-# @jwt_required()
+@jwt_required()
 def get_all_enrolled_courses():
 
     enrolled_courses_data = CourseEnrolled.query.all()
@@ -658,7 +658,7 @@ def enroll_for_a_course():
 
 
 @app.route("/user/search/courses/<string:query>", methods=["GET"])
-# @jwt_required()
+@jwt_required()
 def search_course_by_name(query):
     # Split the query string into individual words and convert them to lowercase
     query_words = query.lower().split()
