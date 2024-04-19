@@ -1,0 +1,60 @@
+body {
+  background-image: url("/foursils.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+blockquote {
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 70%;
+  margin-top: 20px;
+  font-style: italic;
+  font-size: large;
+  color: beige;
+}
+
+.Welcome {
+    padding-bottom: 50px;
+    margin-bottom: 120px;
+    color: beige;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 10vh;
+    margin-bottom: 170px;
+  }
+  
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px; /* Adjust as needed */
+  }
+  
+  .card {
+    flex-basis: calc(40% - 40px); /* Adjust as needed for desired width */
+    border-radius: 8px;
+    padding: 1px;
+    margin-bottom: 20px;
+  }
+  
+  @media (max-width: 100px) {
+    .card {
+      flex-basis: calc(10% - 10px); /* Adjust as needed for desired width on smaller screens */
+    }
+  }
+  
