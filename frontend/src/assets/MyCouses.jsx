@@ -48,6 +48,7 @@ const MyCourses = () => {
 
     fetchCourses();
   }, []);
+  
 
   if (loading) {
     return <div>Loading...</div>;

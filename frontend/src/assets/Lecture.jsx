@@ -33,7 +33,7 @@ function LectureForm() {
     setSelectedModule(event.target.value);
   }
 
-  const token = localStorage.getItem('access_token');
+  // const token = localStorage.getItem('access_token');
 
   const fetchAllModules = async () => {
     try {
