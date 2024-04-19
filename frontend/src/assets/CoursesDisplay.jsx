@@ -18,7 +18,7 @@ const CourseDetails = () => {
       const response = await fetch(url, {
         method: "GET",
         headers: {
-          'Authorization': `Bearer ${tokenDetails}`
+            'Authorization': `Bearer ${tokenDetails}`
         }
       });
       if (response.ok) {
@@ -58,12 +58,12 @@ const CourseDetails = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${tokenDetails}`,
+          'Authorization': `Bearer ${tokenDetails}`, 
         },
         body: JSON.stringify({
           course_id: courseId,
-          user_id: userId,
-          registration_id: courseId,
+          user_id: userId, 
+          registration_id: courseId, 
         }),
       });
       if (response.ok) {
@@ -110,3 +110,5 @@ const CourseDetails = () => {
 };
 
 export default CourseDetails;
+
+

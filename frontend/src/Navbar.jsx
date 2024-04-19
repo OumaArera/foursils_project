@@ -19,7 +19,7 @@ function Navbar() {
                 </div>
             </div>
             <NavLink to='/' className='homebtn'>Home</NavLink>
-            <NavLink to='/Logout' className='logout-btn'>Logout</NavLink>
+            {/* <NavLink to='/Logout' className='logout-btn'>Logout</NavLink> */}
             </div>
             </div>
             
