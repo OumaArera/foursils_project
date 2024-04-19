@@ -696,6 +696,9 @@ def search_course_by_name(query):
     return response
 
 
+
+
+
 @app.route("/user/my/courses/<int:id>", methods=["GET"])
 @jwt_required()
 def get_my_courses(id):
@@ -734,9 +737,9 @@ def get_my_courses(id):
 
     return response
 
-my_name = "HIII"
+# my_name = "HIII"
 
-print(my_name)
+# print(my_name)
 
 
 
