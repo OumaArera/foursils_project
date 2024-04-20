@@ -95,6 +95,7 @@
 .navlink {
     color: purple;
     text-decoration: none;
+    width: 50%;
 }
 
 .navlink:hover {
