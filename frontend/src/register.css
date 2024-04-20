@@ -1,0 +1,228 @@
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #1bf9db;
+  }
+} */
+
+
+.navbar {
+  background-color: rgb(231, 185, 32);
+  padding: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  z-index: 1; 
+  
+}
+
+.navbar-stuff {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+  border: solid;
+  padding: 10px;
+  
+}
+
+.left-links {
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.navlink {
+  margin: 0 1.5rem;
+  text-decoration: none;
+  border: 1px solid black;
+  border-radius: 12px;
+  background-color: transparent;
+  padding: 5px;
+  color: blue;
+}
+
+.navlink:hover {
+  
+    background-color: #102c60;
+    color: white;
+}
+
+.comp {
+  color: orangered;
+}
+
+.name-org {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.register-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 20px;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'],
+select {
+  width: 70%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.reg-stuff {
+  width: 70%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.confirm {
+  width: 70%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+button:hover {
+  background-color: #104913;
+}
+
+body {
+  background-color: #bface2;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tutor-container {
+  background-color: #ece6f6;
+  color: black;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  width: 80%; /* Ensure the container retains its size */
+}
+
+.header {
+  font-size: 2em;
+  color: black;
+}
+
+.buttons-top {
+  display: flex;
+  justify-content: center; /* Center the buttons horizontally */
+  align-items: center; /* Center the buttons vertically */
+  margin-top: 20px;
+  width: 100%;
+}
+
+.button {
+  padding: 10px 20px;
+  margin: 0 10px; /* Add space between buttons */
+  background-color: #8a2be2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button:hover {
+  background-color: #6a1b9a;
+}
+
+.form-container {
+  margin-top: 20px;
+}
+
+form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form h2 {
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  color: #333;
+}
+
+form label {
+  display: block;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+form input[type="text"],
+form textarea,
+form input[type="datetime-local"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+form textarea {
+  resize: vertical; /* Allow vertical resizing */
+}
+
+form button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #8a2be2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+form button[type="submit"]:hover {
+  background-color: #6a1b9a;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
