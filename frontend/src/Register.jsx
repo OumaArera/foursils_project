@@ -1,27 +1,42 @@
 import React, { useState } from 'react';
+//import { useHistory } from 'react-router-dom';
+
+//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const REGISTER_URL = "http://127.0.0.1:5000/user/signup"
 
 function Register() {
+  //const history = useHistory();
   const [userType, setUserType] = useState('');
   const [formData, setFormData] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+
+  const togglePassword = () => {
+    setShowPassword(!showPassword);
+  };
+
 
   const handleUserTypeChange = (e) => {
     setUserType(e.target.value);
+
+    if (formData.email && (!formData.email.includes('.') || !formData.email.includes('@'))) {
+      setError('Email must contain both "." and "@".')
+    }
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
+   const handleSubmit = (e) => {
+     e.preventDefault();
 
-  //   // Here you can submit the form data to your backend API
-  //   console.log(formData);
-  //   // Reset the form after submission if needed
-  //   setFormData({});
-  // };
+  };
 
   const registerUser = async e => {
 
     e.preventDefault();
+    
+     if (formData.password_confirmation !== formData.password) {
+       setError('Passwords do not match');
+       return;
+    }
 
     const userdata = {
       'role': userType,
@@ -48,6 +63,10 @@ function Register() {
     if (response.ok){
       const data = await response.json()
       console.log(data)
+      setFormData({});
+      history.push('/Login');
+      
+     
 
     }else{
       console.log("There was an error")
@@ -58,9 +77,11 @@ function Register() {
     }
   }
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    
+
     setFormData((prevState) => ({
       ...prevState,
       [name]: value,
@@ -131,18 +152,19 @@ function Register() {
 
       <label htmlFor="password">Password:</label>
       <input
-        type="password"
+        type={showPassword ? "text" : "password"}
         id="password"
         name="password"
         value={formData.password || ''}
         onChange={handleChange}
       />
+       <button onClick={togglePassword}>see</button>
       <br />
 
       <label htmlFor="password_confirmation">Confirm Password:</label>
       <input
         className='confirm'
-        type="password_confirmation"
+        type="password"
         id="password_confirmation"
         name="password_confirmation"
         value={formData.password_confirmation || ''}
@@ -214,7 +236,7 @@ function Register() {
       <br />
       <label htmlFor="password">Password:</label>
       <input
-        type="password"
+        type={showPassword ? "text" : "password"}
         id="password"
         name="password"
         value={formData.password || ''}
@@ -223,13 +245,14 @@ function Register() {
       <br />
       <label htmlFor="password_confirmation">Confirm Password:</label>
       <input
-        className='confirm'
-        type="password_confirmation"
+        
+        type={showPassword ? "text" : "password"}
         id="password_confirmation"
         name="password_confirmation"
         value={formData.password_confirmation || ''}
         onChange={handleChange}
       />
+       <br />
       
       
     </>
@@ -246,12 +269,13 @@ function Register() {
           <option value="instructor">Instructor</option>
         </select>
       </div>
-      <form onSubmit={registerUser}>
+      <form onSubmit={registerUser} >
         {userType === 'student' && studentFormFields}
         {userType === 'instructor' && instructorFormFields}
         <br />
         <button type="submit">Register</button>
       </form>
+      {error && <div className="error-message">{error}</div>}
     </div>
   );
 }
