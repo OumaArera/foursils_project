@@ -8,8 +8,10 @@ import "./Login.css";
 import CourseDetails from "./assets/CoursesDisplay";
 import MyCourses from "./assets/MyCouses";
 // import SearchCourses from "./assets/SearchCourses";
+import {useHistory} from 'react-router-dom'
 
 function Login() {
+  const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -56,6 +58,9 @@ function Login() {
         localStorage.setItem("user_id", JSON.stringify(data.user_id));
         localStorage.setItem("role", JSON.stringify(data.role));
         setIsLoggedIn(true);
+        history.push('/');
+
+
       } else {
         throw new Error("Failed to authenticate");
       }
