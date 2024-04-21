@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-const REGISTER_URL = "http://127.0.0.1:5000/user/signup"
-import './Register.css'
+import './Register.css'; // Import the CSS file
+
+const REGISTER_URL = "http://127.0.0.1:5000/user/signup";
 
 function Register() {
   const [userType, setUserType] = useState('');
@@ -11,31 +12,21 @@ function Register() {
     setUserType(e.target.value);
   };
 
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   // Here you can submit the form data to your backend API
-  //   console.log(formData);
-  //   // Reset the form after submission if needed
-  //   setFormData({});
-  // };
-
   const registerUser = async e => {
-
     e.preventDefault();
 
     const userdata = {
       'role': userType,
       'first_name': formData.first_name,
       'last_name': formData.last_name,
-      'middle_name': formData.middle_name, // added middle name
+      'middle_name': formData.middle_name,
       'username': formData.username,
       'email': formData.email,
       'staff_number': formData.password,
       'reg_number': formData.reg_number,
       'password_hash': formData.password,
       'password_confirmation': formData.password_confirmation
-    }
+    };
 
     try {
       const response = await fetch(REGISTER_URL, {
@@ -45,20 +36,17 @@ function Register() {
             Accept: "application/json",
         },
         body: JSON.stringify(userdata)
-    })
-    if (response.ok){
-      const data = await response.json()
-      console.log(data)
-
-    }else{
-      console.log("There was an error")
+      });
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+      } else {
+        console.log("There was an error");
+      }
+    } catch (error) {
+      console.log(error);
     }
-    }
-    catch (error) {
-      console.log(error)
-    }
-  }
-
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -69,533 +57,229 @@ function Register() {
   };
 
   const studentFormFields = (
-    <>
-      <label htmlFor="first_name">First Name:</label>
+    <div className='signupform'>
+      <>
+      <div className='inputsignup'>
+      <label htmlFor="first_name" className="label">First Name:</label>
       <input
         type="text"
         id="first_name"
         name="first_name"
         value={formData.first_name || ''}
         onChange={handleChange}
+        className="input"
       />
-      <br />
-
-      <label htmlFor="Middle_name">Middle Name:</label>
+      </div>
+      <div className='inputsignup'>
+      <label htmlFor="middle_name" className="label">Middle Name:</label>
       <input
         type="text"
         id="middle_name"
         name="middle_name"
         value={formData.middle_name || ''}
         onChange={handleChange}
+        className="input"
       />
-      <br />
-      <label htmlFor="last_name">Last Name:</label>
+      </div>
+     
+      <div className='inputsignup'>
+      <label htmlFor="last_name" className="label">Last Name:</label>
       <input
         type="text"
         id="last_name"
         name="last_name"
         value={formData.last_name || ''}
         onChange={handleChange}
+        className="input"
       />
-      <br />
-
-      <label htmlFor="reg_number">Registration Number:</label>
+      </div>
+      
+      <div className='inputsignup'>
+      <label htmlFor="reg_number" className="label">Reg Number:</label>
       <input
-        className='reg-stuff'
-        type="reg_number"
+        type="text"
         id="reg_number"
         name="reg_number"
         value={formData.reg_number || ''}
         onChange={handleChange}
+        className="input reg-stuff"
       />
-
-      <br />
-
-      <label htmlFor="username">Username:</label>
+      </div>
+      
+      <div className='inputsignup'>
+        <label htmlFor="username" className="label">Username:</label>
       <input
         type="text"
         id="username"
         name="username"
         value={formData.username || ''}
         onChange={handleChange}
+        className="input"
       />
-      <br />
-      <label htmlFor="email">Email:</label>
+      </div>
+      
+      <div className='inputsignup'>
+      <label htmlFor="email" className="label">Email:</label>
       <input
         type="email"
         id="email"
         name="email"
         value={formData.email || ''}
         onChange={handleChange}
+        className="input"
       />
-      <br />
+      </div>
 
-      <label htmlFor="password">Password:</label>
+      <div className='inputsignup'>
+      <label htmlFor="password" className="label">Password:</label>
       <input
         type="password"
         id="password"
         name="password"
         value={formData.password || ''}
         onChange={handleChange}
+        className="input"
       />
-      <br />
+      </div>
 
-      <label htmlFor="password_confirmation">Confirm Password:</label>
+      <div className='inputsignup'>
+      <label htmlFor="password_confirmation" className="label">Confirm Password:</label>
       <input
-        className='confirm'
-        type="password_confirmation"
+        type="password"
         id="password_confirmation"
         name="password_confirmation"
         value={formData.password_confirmation || ''}
         onChange={handleChange}
+        className="input confirm"
       />
-      <br />
-      
-      
-    </>
+      </div>
+      </>
+    </div>
   );
 
   const instructorFormFields = (
-    <>
-      <label htmlFor="first_name">First Name:</label>
+    <div className='signupform'>
+         <>
+      <div className='inputsignup'>   
+      <label htmlFor="first_name" className="label">First Name:</label>
       <input
         type="text"
         id="first_name"
         name="first_name"
         value={formData.first_name || ''}
         onChange={handleChange}
+        className="input"
       />
-      
-      <label htmlFor="Middle_name">Middle Name:</label>
+      </div>
+
+      <div className='inputsignup'>
+      <label htmlFor="middle_name" className="label">Middle Name:</label>
       <input
         type="text"
         id="middle_name"
         name="middle_name"
         value={formData.middle_name || ''}
         onChange={handleChange}
+        className="input"
       />
-      <br />
-      <br />
-      <label htmlFor="last_name">Last Name:</label>
+      </div>
+      <div className='inputsignup'>
+      <label htmlFor="last_name" className="label">Last Name:</label>
       <input
         type="text"
         id="last_name"
         name="last_name"
         value={formData.last_name || ''}
         onChange={handleChange}
+        className="input"
       />
-      
-      <br />
-      <label htmlFor="staff_number">Staff Number:</label>
+      </div>
+      <div className='inputsignup'>
+      <label htmlFor="staff_number" className="label">Staff Number:</label>
       <input
         type="text"
         id="staff_number"
         name="staff_number"
         value={formData.staff_number || ''}
         onChange={handleChange}
+        className="input"
       />
-      <br />
-      <label htmlFor="username">Username:</label>
+      </div>
+
+      <div className='inputsignup'>
+      <label htmlFor="username" className="label">Username:</label>
       <input
         type="text"
         id="username"
         name="username"
         value={formData.username || ''}
         onChange={handleChange}
+        className="input"
       />
-      <br />
-      <label htmlFor="email">Email:</label>
+      </div>
+      
+      <div className='inputsignup'>
+      <label htmlFor="email" className="label">Email:</label> 
       <input
         type="email"
         id="email"
         name="email"
         value={formData.email || ''}
         onChange={handleChange}
+        className="input"
       />
-      <br />
-      <label htmlFor="password">Password:</label>
+      </div>
+
+      <div className='inputsignup'>
+      <label htmlFor="password" className="label">Password:</label>
       <input
         type="password"
         id="password"
         name="password"
         value={formData.password || ''}
         onChange={handleChange}
+        className="input"
       />
-      <br />
-      <label htmlFor="password_confirmation">Confirm Password:</label>
+      </div>
+      <div className='inputsignup'>
+      <label htmlFor="password_confirmation" className="label">Confirm Password:</label>
       <input
-        className='confirm'
-        type="password_confirmation"
+        type="password"
         id="password_confirmation"
         name="password_confirmation"
         value={formData.password_confirmation || ''}
         onChange={handleChange}
+        className="input confirm"
       />
-      
-      
+      </div>
     </>
+
+    </div>
+ 
   );
 
   return (
-    <div>
-      <h2>Register Here</h2>
-      <div>
-        <label htmlFor="userType">Select Role:</label>
-        <select id="userType" value={userType} onChange={handleUserTypeChange}>
-          <option value="">Select User Type</option>
-          <option value="student">Student</option>
-          <option value="instructor">Instructor</option>
-        </select>
+      <div className="register-container">
+        <form className="register-form" onSubmit={registerUser}>
+          <h2>Register Here</h2>
+          <div>
+            <label htmlFor="userType">Select User Type:</label>
+            <select
+              id="userType"
+              value={userType}
+              onChange={handleUserTypeChange}
+            >
+              <option value="">Select User Type</option>
+              <option value="student">Student</option>
+              <option value="instructor">Instructor</option>
+            </select>
+          </div>
+          {userType === 'student' && studentFormFields}
+          {userType === 'instructor' && instructorFormFields}
+          <button type="submit">Register</button>
+        </form>
       </div>
-      <form onSubmit={registerUser}>
-        {userType === 'student' && studentFormFields}
-        {userType === 'instructor' && instructorFormFields}
-        <br />
-        <button type="submit">Register</button>
-      </form>
-    </div>
-  );
-}
-
-export default Register;
-
-
-
-// import React, { useState } from 'react';
-
-// import './Register.css'; // Import the CSS file
-
-// const REGISTER_URL = "http://127.0.0.1:5000/user/signup";
-
-// function Register() {
-//   //const history = useHistory();
-//   const [userType, setUserType] = useState('');
-//   const [formData, setFormData] = useState({});
-//   const [showPassword, setShowPassword] = useState(false);
-//   const [error, setError] = useState('');
-
-//   const togglePassword = () => {
-//     setShowPassword(!showPassword);
-//   };
-
-
-//   const handleUserTypeChange = (e) => {
-//     setUserType(e.target.value);
-
-//     if (formData.email && (!formData.email.includes('.') || !formData.email.includes('@'))) {
-//       setError('Email must contain both "." and "@".')
-//     }
-//   };
-
-
-
-//   const registerUser = async e => {
-//     e.preventDefault();
-    
-//      if (formData.password_confirmation !== formData.password) {
-//        setError('Passwords do not match');
-//        return;
-//     }
-
-//     const userdata = {
-//       'role': userType,
-//       'first_name': formData.first_name,
-//       'last_name': formData.last_name,
-//       'middle_name': formData.middle_name,
-//       'username': formData.username,
-//       'email': formData.email,
-//       'staff_number': formData.password,
-//       'reg_number': formData.reg_number,
-//       'password_hash': formData.password,
-//       'password_confirmation': formData.password_confirmation
-//     };
-
-//     try {
-//       const response = await fetch(REGISTER_URL, {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json",
-//             Accept: "application/json",
-//         },
-//         body: JSON.stringify(userdata)
-
-//       });
-//       if (response.ok) {
-//         const data = await response.json();
-//         console.log(data);
-//       } else {
-//         console.log("There was an error");
-//       }
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-
-    
-
-//     setFormData((prevState) => ({
-//       ...prevState,
-//       [name]: value,
-//     }));
-//   };
-
-//   const studentFormFields = (
-//     <div className='signupform'>
-//       <>
-//       <div className='inputsignup'>
-//       <label htmlFor="first_name" className="label">First Name:</label>
-//       <input
-//         type="text"
-//         id="first_name"
-//         name="first_name"
-//         value={formData.first_name || ''}
-//         onChange={handleChange}
-//         className="input"
-//       />
-//       </div>
-//       <div className='inputsignup'>
-//       <label htmlFor="middle_name" className="label">Middle Name:</label>
-//       <input
-//         type="text"
-//         id="middle_name"
-//         name="middle_name"
-//         value={formData.middle_name || ''}
-//         onChange={handleChange}
-//         className="input"
-//       />
-//       </div>
-     
-//       <div className='inputsignup'>
-//       <label htmlFor="last_name" className="label">Last Name:</label>
-//       <input
-//         type="text"
-//         id="last_name"
-//         name="last_name"
-//         value={formData.last_name || ''}
-//         onChange={handleChange}
-//         className="input"
-//       />
-//       </div>
-      
-//       <div className='inputsignup'>
-//       <label htmlFor="reg_number" className="label">Reg Number:</label>
-//       <input
-//         type="text"
-//         id="reg_number"
-//         name="reg_number"
-//         value={formData.reg_number || ''}
-//         onChange={handleChange}
-//         className="input reg-stuff"
-//       />
-//       </div>
-      
-//       <div className='inputsignup'>
-//         <label htmlFor="username" className="label">Username:</label>
-//       <input
-//         type="text"
-//         id="username"
-//         name="username"
-//         value={formData.username || ''}
-//         onChange={handleChange}
-//         className="input"
-//       />
-//       </div>
-      
-//       <div className='inputsignup'>
-//       <label htmlFor="email" className="label">Email:</label>
-//       <input
-//         type="email"
-//         id="email"
-//         name="email"
-//         value={formData.email || ''}
-//         onChange={handleChange}
-//         className="input"
-//       />
-//       </div>
-
-//       <div className='inputsignup'>
-//       <label htmlFor="password" className="label">Password:</label>
-//       <input
-//         type={showPassword ? "text" : "password"}
-//         id="password"
-//         name="password"
-//         value={formData.password || ''}
-//         onChange={handleChange}
-//         className="input"
-//       />
-
-//       </div>
-
-
-//       <div className='inputsignup'>
-//       <label htmlFor="password_confirmation" className="label">Confirm Password:</label>
-//       <input
-
-
-//         type="password"
-//         id="password_confirmation"
-//         name="password_confirmation"
-//         value={formData.password_confirmation || ''}
-//         onChange={handleChange}
-//         className="input confirm"
-//       />
-//       </div>
-//       </>
-//     </div>
-//   );
-
-//   const instructorFormFields = (
-//     <div className='signupform'>
-//          <>
-//       <div className='inputsignup'>   
-//       <label htmlFor="first_name" className="label">First Name:</label>
-//       <input
-//         type="text"
-//         id="first_name"
-//         name="first_name"
-//         value={formData.first_name || ''}
-//         onChange={handleChange}
-//         className="input"
-//       />
-//       </div>
-
-//       <div className='inputsignup'>
-//       <label htmlFor="middle_name" className="label">Middle Name:</label>
-//       <input
-//         type="text"
-//         id="middle_name"
-//         name="middle_name"
-//         value={formData.middle_name || ''}
-//         onChange={handleChange}
-//         className="input"
-//       />
-//       </div>
-//       <div className='inputsignup'>
-//       <label htmlFor="last_name" className="label">Last Name:</label>
-//       <input
-//         type="text"
-//         id="last_name"
-//         name="last_name"
-//         value={formData.last_name || ''}
-//         onChange={handleChange}
-//         className="input"
-//       />
-//       </div>
-//       <div className='inputsignup'>
-//       <label htmlFor="staff_number" className="label">Staff Number:</label>
-//       <input
-//         type="text"
-//         id="staff_number"
-//         name="staff_number"
-//         value={formData.staff_number || ''}
-//         onChange={handleChange}
-//         className="input"
-//       />
-//       </div>
-
-//       <div className='inputsignup'>
-//       <label htmlFor="username" className="label">Username:</label>
-//       <input
-//         type="text"
-//         id="username"
-//         name="username"
-//         value={formData.username || ''}
-//         onChange={handleChange}
-//         className="input"
-//       />
-//       </div>
-      
-//       <div className='inputsignup'>
-//       <label htmlFor="email" className="label">Email:</label> 
-//       <input
-//         type="email"
-//         id="email"
-//         name="email"
-//         value={formData.email || ''}
-//         onChange={handleChange}
-//         className="input"
-//       />
-//       </div>
-
-//       <div className='inputsignup'>
-//       <label htmlFor="password" className="label">Password:</label>
-//       <input
-//         type={showPassword ? "text" : "password"}
-//         id="password"
-//         name="password"
-//         value={formData.password || ''}
-//         onChange={handleChange}
-//         className="input"
-//       />
-//       </div>
-//       <div className='inputsignup'>
-//       <label htmlFor="password_confirmation" className="label">Confirm Password:</label>
-//       <input
-
-//         type="password"
-
-//         id="password_confirmation"
-//         name="password_confirmation"
-//         value={formData.password_confirmation || ''}
-//         onChange={handleChange}
-//         className="input confirm"
-//       />
-
-//       </div>
-
-//     </>
-
-
-
-//   return (
-//     <div>
-//       <h2>Register Here</h2>
-//       <div>
-//         <label htmlFor="userType">Select User Type:</label>
-//         <select id="userType" value={userType} onChange={handleUserTypeChange}>
-//           <option value="">Select User Type</option>
-//           <option value="student">Student</option>
-//           <option value="instructor">Instructor</option>
-//         </select>
-//       </div>
-//       <form onSubmit={registerUser} >
-//         {userType === 'student' && studentFormFields}
-//         {userType === 'instructor' && instructorFormFields}
-//         <br />
-//         <button type="submit">Register</button>
-//       </form>
-//       {error && <div className="error-message">{error}</div>}
-
-//     </div>
- 
-//   );
-
-//   return (
-//       <div className="register-container">
-//         <form className="register-form" onSubmit={registerUser}>
-//           <h2>Register Here</h2>
-//           <div>
-//             <label htmlFor="userType">Select User Type:</label>
-//             <select
-//               id="userType"
-//               value={userType}
-//               onChange={handleUserTypeChange}
-//             >
-//               <option value="">Select User Type</option>
-//               <option value="student">Student</option>
-//               <option value="instructor">Instructor</option>
-//             </select>
-//           </div>
-//           {userType === 'student' && studentFormFields}
-//           {userType === 'instructor' && instructorFormFields}
-//           <button type="submit">Register</button>
-//         </form>
-//       </div>
-//     );
-//   }
+    );
+  }
   
-//   export default Register;
+  export default Register;
