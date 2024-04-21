@@ -21,6 +21,9 @@ function Home() {
       <div className='homeimg'>
       <img src="https://images.unsplash.com/photo-1488998427799-e3362cec87c3?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2Vic2l0ZSUyMGJhbm5lcnxlbnwwfHwwfHx8MA%3D%3D" alt="" class="element" id="mw-element-1713723"/>
       </div>
+      <div className='homeimg1'>
+      <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGVkdWNhdGlvbnxlbnwwfHwwfHx8MA%3D%3D" alt="" class="element" id="mw-element-1713723"/>
+      </div>
       <div className="homeicon1">
       <img loading="lazy" src="https://718448.microweber.me/userfiles/templates/online-learning/assets/img/layouts/new-templates/service-01.png" alt="" class="element" id="mw-element-1713723627026"/>
       </div>

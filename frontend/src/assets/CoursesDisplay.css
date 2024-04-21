@@ -36,11 +36,11 @@
     cursor: pointer;
   }
   
-  .course-cards {
+  /* .course-cards {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-  }
+  } */
   
   .course-card {
     flex: 1 4 3px; 

@@ -21,7 +21,7 @@ function Login() {
   useEffect(() => {
     const storedRole = localStorage.getItem("role");
     if (storedRole) {
-      setRole(JSON.parse(storedRole));
+      // setRole(JSON.parse(storedRole));
     }
   }, []);
 
