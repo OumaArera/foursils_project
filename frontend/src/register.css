@@ -226,3 +226,6 @@ form button[type="submit"]:hover {
   margin-top: 10px;
 }
 
+.success-message {
+  color: green;
+}

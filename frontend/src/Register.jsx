@@ -9,6 +9,7 @@ function Register() {
   const [userType, setUserType] = useState('');
   const [formData, setFormData] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [error, setError] = useState('');
 
   const togglePassword = () => {
@@ -62,8 +63,9 @@ function Register() {
     })
     if (response.ok){
       const data = await response.json()
-      console.log(data)
+      
       setFormData({});
+      setRegistrationSuccess(true);
       history.push('/Login');
       
      
@@ -276,6 +278,7 @@ function Register() {
         <button type="submit">Register</button>
       </form>
       {error && <div className="error-message">{error}</div>}
+      {registrationSuccess && <div className="success-message">Successful Registration!</div>}
     </div>
   );
 }
