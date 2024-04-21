@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './CoursesDisplay.css';
 
 const COURSES_URL = "http://127.0.0.1:5000/user/courses";
 const ENROL_URL = "http://127.0.0.1:5000/user/enroll";
@@ -96,14 +97,23 @@ const CourseDetails = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search for courses..."
         />
+        <br/>
         <button onClick={handleSearch}>Search</button>
       </div>
+      
       {courses.map(course => (
+       
+        <div className='carddisplay-container'>
+        <>
         <div key={course.id} className="course-card">
           <h3>{course.title}</h3>
           <p>{course.description}</p>
           <button onClick={() => enrollCourse(course.id)}>Enroll</button>
         </div>
+        </>
+        </div>
+       
+       
       ))}
     </div>
   );

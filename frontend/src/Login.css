@@ -1,6 +1,6 @@
 #logout-btn{
-    right: 100px;
-    top: 150px;
+    right: 20px;
+    top: 90px;
     position: absolute;
     color: whitesmoke;
     font-size: 1.2vw;
@@ -8,8 +8,8 @@
 }
 
 #course-crt{
-    right: 100px;
-    top: 250px;
+    left: 1px;
+    top: 90px;
     position: absolute;
     color: whitesmoke;
     font-size: 1.2vw;

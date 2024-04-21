@@ -101,7 +101,6 @@ function Login() {
     <div>
       {!isLoggedIn ? (
         <div className="container">
-          <h1>Welcome Home</h1>
           <form onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email">Email:</label>
