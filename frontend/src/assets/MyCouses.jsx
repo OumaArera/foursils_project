@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 // Define API endpoints
 const MY_COURSES_URL = "http://127.0.0.1:5000/user/my/courses";
-const COURSE_CONTENT_URL = "http://127.0.0.1:5000/course/";
+const COURSE_CONTENT_URL = "http://127.0.0.1:5000/user/";
+const DROP_COURSE_URL = "http://127.0.0.1:5000/user/drop/course"
 
 const MyCourses = () => {
   // State variables
@@ -77,7 +78,7 @@ const MyCourses = () => {
   // Remove course when "Drop" button is clicked
   const dropCourse = async (courseId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/user/drop/${courseId}`, {
+      const response = await fetch(`${DROP_COURSE_URL}/${courseId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${tokenDetails}`
@@ -86,8 +87,10 @@ const MyCourses = () => {
       if (response.ok) {
         // Update courses list without the dropped course
         setCourses(prevCourses => prevCourses.filter(course => course.id !== courseId));
+
       } else {
         console.error('Failed to drop course');
+
       }
     } catch (error) {
       console.error('Error dropping course:', error);
