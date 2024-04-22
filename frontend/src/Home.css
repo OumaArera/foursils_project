@@ -119,5 +119,9 @@ body {
     height: 70%; /* Adjust the height to your preferred card size */
     overflow: hidden; /* Ensure the image does not overflow its container */
     shadow: 2px 1px 1px rgba(0, 0, 0, 0);
+<<<<<<< HEAD
 }
 
+=======
+}
+>>>>>>> e6ce359 (feat: done)
