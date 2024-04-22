@@ -24,7 +24,7 @@ function Login() {
   useEffect(() => {
     const storedRole = localStorage.getItem("role");
     if (storedRole) {
-      setRole(JSON.parse(storedRole));
+      // setRole(JSON.parse(storedRole));
     }
   }, []);
 
@@ -107,7 +107,6 @@ function Login() {
     <div>
       {!isLoggedIn ? (
         <div className="container">
-          <h1>Welcome Home</h1>
           <form onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email">Email:</label>
