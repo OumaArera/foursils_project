@@ -65,6 +65,14 @@
   font-weight: bold;
 }
 
+.register-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
 
 label {
   display: block;
@@ -76,7 +84,7 @@ input[type='text'],
 input[type='email'],
 input[type='password'],
 select {
-  width: 200px;
+  width: 70%;
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -168,7 +176,7 @@ body {
 
 form {
   background-color: #fff;
-  padding: 200px;
+  padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -211,5 +219,10 @@ form button[type="submit"] {
 
 form button[type="submit"]:hover {
   background-color: #6a1b9a;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
 }
 

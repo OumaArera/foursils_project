@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './CourseDisplay.css'; // Import the CSS file
 
+import './CoursesDisplay.css';
+
 // URLs for API endpoints
 const COURSES_URL = "http://127.0.0.1:5000/user/courses";
 const ENROL_URL = "http://127.0.0.1:5000/user/enroll";
@@ -135,11 +137,33 @@ const CourseDisplay = () => {
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search for courses..."
         />
+        <br/>
         <button onClick={handleSearch}>Search</button>
       </div>
+
       {/* Search message and enrollment status messages */}
       {searchMessage && <p className="error-message">{searchMessage}</p>}
       {enrollmentStatus && <p className="error-message">{enrollmentStatus}</p>}
+
+
+      
+      {courses.map(course => (
+       
+        <div className='carddisplay-container'>
+        <>
+        <div key={course.id} className="course-card">
+          <h3>{course.title}</h3>
+          <p>{course.description}</p>
+          <button onClick={() => enrollCourse(course.id)}>Enroll</button>
+        </div>
+        </>
+        </div>
+       
+       
+      ))}
+
+      {/* Search message */}
+      {searchMessage && <p>{searchMessage}</p>}
       {/* Display available courses */}
       <div className="course-cards">
         {courses.length === 0 ? (
@@ -168,6 +192,10 @@ const CourseDisplay = () => {
           </div>
         ))}
       </div>
+
+
+      {/* Enrollment status message */}
+      {enrollmentStatus && <p>{enrollmentStatus}<
     </div>
   );
 };
