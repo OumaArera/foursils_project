@@ -76,7 +76,7 @@ input[type='text'],
 input[type='email'],
 input[type='password'],
 select {
-  width: 70%;
+  width: 200px;
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -168,7 +168,7 @@ body {
 
 form {
   background-color: #fff;
-  padding: 20px;
+  padding: 200px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
