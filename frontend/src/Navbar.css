@@ -1,0 +1,103 @@
+.navbar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 99%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    background-color: #430d8f; 
+    color: #ffffff; 
+}
+.linksss{
+    justify-content: space-between;
+}
+
+.name-org {
+    font-family: 'Arial', sans-serif; 
+    font-size: 24px;
+}
+
+.comp {
+    color: #dedccc; 
+}
+
+.dropdown {
+    position: relative;
+    position: fixed;
+    left: 75%;
+}
+.homebtn {
+    color: aliceblue;
+    margin-right: 10px; 
+    padding: 8px 16px; 
+    border: 2px solid transparent; 
+    border-radius: 5px; 
+    text-decoration: none; 
+    position: fixed;
+    left: 93%;
+}
+
+.logout-btn {
+    color: aliceblue;
+    margin-left: 10px; 
+    padding: 8px 16px; 
+    border: 2px solid transparent; 
+    border-radius: 5px; 
+    text-decoration: none; 
+    position: fixed;
+    left: 93%;
+}
+
+
+.dropbtn {
+    background-color: purple;
+    color: white;
+    padding: 8px 16px; 
+    font-size: 12px; 
+    border: 2px solid transparent; 
+    border-radius: 5px; 
+    cursor: pointer;
+    text-decoration: none; 
+    margin-right: 10px; 
+}
+
+.dropbtn:hover, .logout-btn:hover {
+    border-color: white; 
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 10px;
+    z-index: 1;
+    right: 0; 
+    top: 130%; 
+}
+
+.dropdown-content a {
+    color: rgb(236, 227, 227);
+    padding: 5px 10px;
+    text-decoration: none;
+    display: inline-table;
+    background-color: #2b1d3f;
+}
+
+.dropdown-content a:hover {
+    background-color: rgb(208, 172, 234);
+}
+
+.dropdown:hover .dropdown-content {
+    display: flow-root;
+}
+
+.navlink {
+    color: purple;
+    text-decoration: none;
+    width: 50%;
+}
+
+.navlink:hover {
+    background-color: #ddd;
+}

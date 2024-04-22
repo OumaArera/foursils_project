@@ -1,0 +1,55 @@
+#logout-btn{
+    right: 100px;
+    top: 150px;
+    position:fixed;
+    right: 20px;
+    top: 90px;
+    position: absolute;
+    color: whitesmoke;
+
+    font-size: 1.2vw;
+    padding: 8px 12px;
+    background-color: #6a1b9a;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+#course-crt{
+    left: 1px;
+    top: 90px;
+    position: absolute;
+    font-size: 1.2vw;
+    padding: 8px 12px;
+    background-color: #6a1b9a;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+#module-crt{
+    right: 100px;
+    top: 350px;
+    position: absolute;
+    color: whitesmoke;
+    font-size: 1.2vw;
+    background-color: #8a2be2;
+}
+
+#lecture-crt{
+    right: 100px;
+    top: 450px;
+    position: absolute;
+    color: whitesmoke;
+    font-size: 1.2vw;
+    background-color: #8a2be2;
+}
+
+#notes-crt{
+    right: 100px;
+    top: 550px;
+    position: absolute;
+    color: whitesmoke;
+    background-color: #8a2be2;
+    font-size: 1.2vw;
+}
