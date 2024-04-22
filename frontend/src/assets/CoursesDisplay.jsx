@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './CourseDisplay.css'; // Import the CSS file
 
-import './CoursesDisplay.css';
-
-// URLs for API endpoints
 const COURSES_URL = "http://127.0.0.1:5000/user/courses";
 const ENROL_URL = "http://127.0.0.1:5000/user/enroll";
 const SEARCH_URL = "http://127.0.0.1:5000/user/search/courses";
 
 const CourseDisplay = () => {
-  // State variables
   const [courses, setCourses] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [tokenDetails, setTokenDetails] = useState("");
@@ -18,7 +14,6 @@ const CourseDisplay = () => {
   const [enrolledCourses, setEnrolledCourses] = useState([]);
   const [enrollmentStatus, setEnrollmentStatus] = useState(null);
 
-  // Function to fetch courses from the backend
   const fetchCourses = async (url) => {
     try {
       const response = await fetch(url, {
@@ -39,12 +34,10 @@ const CourseDisplay = () => {
     }
   };
 
-  // Effect hook to fetch courses when component mounts
   useEffect(() => {
     fetchCourses(COURSES_URL);
   }, []);
 
-  // Effect hook to retrieve token from local storage
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (token) {
@@ -52,7 +45,6 @@ const CourseDisplay = () => {
     }
   }, []);
 
-  // Effect hook to retrieve user ID from local storage
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
     if (userId) {
@@ -60,7 +52,6 @@ const CourseDisplay = () => {
     }
   }, []);
 
-  // Function to enroll in a course
   const enrollCourse = async (courseId) => {
     try {
       const response = await fetch(ENROL_URL, {
@@ -93,7 +84,6 @@ const CourseDisplay = () => {
     }
   };
 
-  // Function to handle course search
   const handleSearch = async () => {
     try {
       if (searchQuery.trim() !== "") {
@@ -125,11 +115,9 @@ const CourseDisplay = () => {
     }
   };
 
-  // JSX rendering
   return (
     <div className="course-details">
       <h2>Available Courses</h2>
-      {/* Search input and button */}
       <div className="search-container">
         <input
           type="text"
@@ -141,49 +129,23 @@ const CourseDisplay = () => {
         <button onClick={handleSearch}>Search</button>
       </div>
 
-      {/* Search message and enrollment status messages */}
       {searchMessage && <p className="error-message">{searchMessage}</p>}
       {enrollmentStatus && <p className="error-message">{enrollmentStatus}</p>}
 
-
-      
       {courses.map(course => (
-       
-        <div className='carddisplay-container'>
-        <>
         <div key={course.id} className="course-card">
           <h3>{course.title}</h3>
           <p>{course.description}</p>
-          <button onClick={() => enrollCourse(course.id)}>Enroll</button>
+          {enrolledCourses.some(enrolledCourse => enrolledCourse.id === course.id) ? (
+            <button disabled>Enrolled</button>
+          ) : (
+            <button onClick={() => enrollCourse(course.id)}>Enroll</button>
+          )}
         </div>
-        </>
-        </div>
-       
-       
       ))}
 
-      {/* Search message */}
-      {searchMessage && <p>{searchMessage}</p>}
-      {/* Display available courses */}
-      <div className="course-cards">
-        {courses.length === 0 ? (
-          <p className="error-message">No courses available.</p>
-        ) : (
-          courses.map(course => (
-            <div key={course.id} className="course-card">
-              <h3>{course.title}</h3>
-              <p>{course.description}</p>
-              {/* Check if course is already enrolled */}
-              {enrolledCourses.some(enrolledCourse => enrolledCourse.id === course.id) ? (
-                <button disabled>Enrolled</button>
-              ) : (
-                <button onClick={() => enrollCourse(course.id)}>Enroll</button>
-              )}
-            </div>
-          ))
-        )}
-      </div>
-      {/* Display enrolled courses */}
+      {courses.length === 0 && <p className="error-message">No courses available.</p>}
+
       <div className="my-courses">
         {enrolledCourses.map(course => (
           <div key={course.id} className="course-card">
@@ -192,10 +154,6 @@ const CourseDisplay = () => {
           </div>
         ))}
       </div>
-
-
-      {/* Enrollment status message */}
-      {enrollmentStatus && <p>{enrollmentStatus}<
     </div>
   );
 };

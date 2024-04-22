@@ -5,11 +5,7 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 // Define API endpoints
 const MY_COURSES_URL = "http://127.0.0.1:5000/user/my/courses";
-const COURSE_CONTENT_URL = "http://127.0.0.1:5000/user/";
-
 const DROP_COURSE_URL = "http://127.0.0.1:5000/user/drop/course";
-const DROP_COURSE_URL = "http://127.0.0.1:5000/user/drop/course"
-
 
 const MyCourses = () => {
   // State variables
@@ -100,11 +96,6 @@ const MyCourses = () => {
       } else {
         // Set error message if response is not OK
         setDropMessage('Failed to drop course.');
-        throw new Error('Failed to drop course.');
-
-
-      } else {
-        console.error('Failed to drop co
       }
     } catch (error) {
       // Set error message if fetch fails
