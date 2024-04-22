@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import './CourseDisplay.css'; // Import the CSS file
+
 import './CoursesDisplay.css';
 
-// Define API endpoints
+// URLs for API endpoints
 const COURSES_URL = "http://127.0.0.1:5000/user/courses";
 const ENROL_URL = "http://127.0.0.1:5000/user/enroll";
 const SEARCH_URL = "http://127.0.0.1:5000/user/search/courses";
@@ -37,12 +39,12 @@ const CourseDisplay = () => {
     }
   };
 
-  // useEffect hook to fetch courses when the component mounts
+  // Effect hook to fetch courses when component mounts
   useEffect(() => {
     fetchCourses(COURSES_URL);
   }, []);
 
-  // useEffect hooks for fetching token and user ID from local storage
+  // Effect hook to retrieve token from local storage
   useEffect(() => {
     const token = localStorage.getItem("access_token");
     if (token) {
@@ -50,6 +52,7 @@ const CourseDisplay = () => {
     }
   }, []);
 
+  // Effect hook to retrieve user ID from local storage
   useEffect(() => {
     const userId = localStorage.getItem("user_id");
     if (userId) {
@@ -57,7 +60,7 @@ const CourseDisplay = () => {
     }
   }, []);
 
-  // Function to handle course enrollment
+  // Function to enroll in a course
   const enrollCourse = async (courseId) => {
     try {
       const response = await fetch(ENROL_URL, {
@@ -74,16 +77,15 @@ const CourseDisplay = () => {
       });
       if (response.ok) {
         console.log('Course enrolled successfully');
-        // Add the enrolled course to the enrolledCourses state
         const enrolledCourse = courses.find(course => course.id === courseId);
         setEnrolledCourses(prevCourses => [...prevCourses, enrolledCourse]);
-        setEnrollmentStatus("You have successfully enrolled for the course");
+        setEnrollmentStatus("Course Enrolled successfully");
       } else if (response.status === 409) {
         console.error('Already enrolled in course');
         setEnrollmentStatus("You have already enrolled for the course");
       } else {
         console.error('Failed to enroll in course');
-        setEnrollmentStatus("Failed to enroll in course,Confirm if you have already enrolled for the course");
+        setEnrollmentStatus("Failed to enrol in course, Confirm if you have already enrolled for the course");
       }
     } catch (error) {
       console.error('Error enrolling in course:', error);
@@ -91,7 +93,7 @@ const CourseDisplay = () => {
     }
   };
 
-  // Function to handle search query submission
+  // Function to handle course search
   const handleSearch = async () => {
     try {
       if (searchQuery.trim() !== "") {
@@ -115,7 +117,7 @@ const CourseDisplay = () => {
         }
       } else {
         setSearchMessage("Please type in the search bar the course you are interested in");
-        fetchCourses(COURSES_URL); // Fetch all courses if search query is empty
+        fetchCourses(COURSES_URL);
       }
     } catch (error) {
       console.error('Error searching for courses:', error.message);
@@ -123,11 +125,12 @@ const CourseDisplay = () => {
     }
   };
 
+  // JSX rendering
   return (
     <div className="course-details">
       <h2>Available Courses</h2>
-      {/* Search bar */}
-      <div>
+      {/* Search input and button */}
+      <div className="search-container">
         <input
           type="text"
           value={searchQuery}
@@ -137,6 +140,11 @@ const CourseDisplay = () => {
         <br/>
         <button onClick={handleSearch}>Search</button>
       </div>
+
+      {/* Search message and enrollment status messages */}
+      {searchMessage && <p className="error-message">{searchMessage}</p>}
+      {enrollmentStatus && <p className="error-message">{enrollmentStatus}</p>}
+
 
       
       {courses.map(course => (
@@ -153,27 +161,28 @@ const CourseDisplay = () => {
        
        
       ))}
-=======
+
       {/* Search message */}
       {searchMessage && <p>{searchMessage}</p>}
       {/* Display available courses */}
-      {courses.length === 0 ? (
-        <p>No courses available.</p>
-      ) : (
-        courses.map(course => (
-          <div key={course.id} className="course-card">
-            <h3>{course.title}</h3>
-            <p>{course.description}</p>
-            {/* Disable enroll button if course is already enrolled */}
-            {enrolledCourses.some(enrolledCourse => enrolledCourse.id === course.id) ? (
-              <button disabled>Enrolled</button>
-            ) : (
-              <button onClick={() => enrollCourse(course.id)}>Enroll</button>
-            )}
-          </div>
-        ))
-      )}
-
+      <div className="course-cards">
+        {courses.length === 0 ? (
+          <p className="error-message">No courses available.</p>
+        ) : (
+          courses.map(course => (
+            <div key={course.id} className="course-card">
+              <h3>{course.title}</h3>
+              <p>{course.description}</p>
+              {/* Check if course is already enrolled */}
+              {enrolledCourses.some(enrolledCourse => enrolledCourse.id === course.id) ? (
+                <button disabled>Enrolled</button>
+              ) : (
+                <button onClick={() => enrollCourse(course.id)}>Enroll</button>
+              )}
+            </div>
+          ))
+        )}
+      </div>
       {/* Display enrolled courses */}
       <div className="my-courses">
         {enrolledCourses.map(course => (
@@ -184,9 +193,9 @@ const CourseDisplay = () => {
         ))}
       </div>
 
-      {/* Enrollment status message */}
-      {enrollmentStatus && <p>{enrollmentStatus}</p>}
 
+      {/* Enrollment status message */}
+      {enrollmentStatus && <p>{enrollmentStatus}<
     </div>
   );
 };
