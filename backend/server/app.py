@@ -1,15 +1,13 @@
-from flask import Flask, request, session, make_response, jsonify
+from flask import Flask, request, make_response, jsonify
 from flask_restful import Api
 from sqlalchemy.exc import IntegrityError
 from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from flask_restful import Api
-# from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from sqlalchemy.exc import IntegrityError
 from models import db
 from datetime import datetime
-# from flask_login import  logout_user
 from flask_cors import CORS
 
 from models import User,  Module, Course, CourseEnrolled, Note,  Lecture
@@ -39,8 +37,8 @@ CORS(app)
 def index():
     return '<h1>Foursils Learning Backend</h1>'
 
-
 @app.route('/user', methods=["GET"])
+@jwt_required()
 def get_users():
     users = User.query.all()
     user_dict = [{"id": user.id, 
@@ -123,8 +121,6 @@ def signup():
         return jsonify({"error": f"Failed to create user. Error: {err}"}), 400
     
 
-
-
 @app.route("/user/signin", methods=["POST"])
 def signin():
     data = request.get_json()
@@ -161,8 +157,6 @@ def signin():
         "username": user.username
         } 
         ), 200
-
-
 
 
 @app.route("/user/profile", methods=["GET"])
@@ -225,8 +219,6 @@ def get_all_courses():
         return response
     else:
         return jsonify({"Error": "There are no courses avavilable"}), 201
-
-
 
 
 @app.route("/user/create/courses", methods=["POST"])
@@ -452,8 +444,6 @@ def create_new_lecture_video():
         return jsonify({"Message": f"There was an error creating module. {err}"}), 400
 
 
-
-
 @app.route("/user/edit/lecture/<int:id>", methods=["PUT"])
 @jwt_required()
 def modify_lecture(id):
@@ -542,8 +532,6 @@ def create_notes():
     except Exception as err:
         db.session.rollback()
         return jsonify({"Message": f"There was an error createing notes. {err}"})
-
-
 
 
 @app.route("/user/modify/notes/<int:id>", methods=["PUT"])
@@ -696,9 +684,6 @@ def search_course_by_name(query):
     return response
 
 
-
-
-
 @app.route("/user/my/courses/<int:id>", methods=["GET"])
 @jwt_required()
 def get_my_courses(id):
@@ -737,9 +722,23 @@ def get_my_courses(id):
 
     return response
 
-# my_name = "HIII"
 
-# print(my_name)
+@app.route("/user/drop/course/<int:id>", methods=["DELETE"])
+@jwt_required()
+def drop_course(id):
+    
+    course_to_drop = CourseEnrolled.query.get(id)
+
+    if not course_to_drop:
+        return jsonify({"Message": "Course does not exist."})
+    
+    try:
+        db.session.delete(course_to_drop)
+        return jsonify({"Message": "Course dropped successfully"})
+    
+    except Exception as err:
+        db.session.rollback()
+        return jsonify({"Message": f"There was an error dropping the course. {err}"})
 
 
 
