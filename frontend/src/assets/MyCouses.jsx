@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import './MyCourses.css'; // Import CSS file
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 // Define API endpoints
 const MY_COURSES_URL = "http://127.0.0.1:5000/user/my/courses";
 const COURSE_CONTENT_URL = "http://127.0.0.1:5000/user/";
+
+// const DROP_COURSE_URL = "http://127.0.0.1:5000/user/drop/course";
 const DROP_COURSE_URL = "http://127.0.0.1:5000/user/drop/course"
+
 
 const MyCourses = () => {
   // State variables
@@ -12,6 +18,7 @@ const MyCourses = () => {
   const [tokenDetails, setTokenDetails] = useState("");
   const [userId, setUserId] = useState("");
   const [courseContent, setCourseContent] = useState(null);
+  const [dropMessage, setDropMessage] = useState(""); // Added state for drop message
 
   // Fetch token details from local storage
   useEffect(() => {
@@ -58,7 +65,7 @@ const MyCourses = () => {
   // Fetch course content when "Start" button is clicked
   const startCourse = async (courseId) => {
     try {
-      const response = await fetch(`${COURSE_CONTENT_URL}/${courseId}/content`, {
+      const response = await fetch(`${COURSE_CONTENT_URL}/${courseId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${tokenDetails}`
@@ -88,12 +95,19 @@ const MyCourses = () => {
         // Update courses list without the dropped course
         setCourses(prevCourses => prevCourses.filter(course => course.id !== courseId));
 
+        // Set success message
+        setDropMessage('Course dropped successfully.');
       } else {
-        console.error('Failed to drop course');
+        // Set error message if response is not OK
+        setDropMessage('Failed to drop course.');
+        throw new Error('Failed to drop course.');
 
-      }
+
+      } 
     } catch (error) {
+      // Set error message if fetch fails
       console.error('Error dropping course:', error);
+      setDropMessage('Error dropping course. Please try again later.');
     }
   };
 
@@ -104,29 +118,55 @@ const MyCourses = () => {
 
   // Render courses
   return (
-    <div>
+    <div className="course-details">
       <h2>My Courses</h2>
+      {/* Display drop message if exists */}
+      {dropMessage && (
+        <p className="error-message">
+          {dropMessage}
+        </p>
+      )}
       {courses.length === 0 ? (
-        <p>No courses enrolled.</p>
+        <p className="error-message">No courses enrolled.</p>
       ) : (
-        <div>
+        <div className="course-cards">
           {courses.map(course => (
-            <div key={course.id}>
+            <div key={course.id} className="course-card">
               <h3>{course.title}</h3>
               <p>{course.description}</p>
               <p>Enrollment Date: {new Date(course.enrollment_date).toLocaleDateString()}</p>
               <button onClick={() => startCourse(course.id)}>Start</button>
-              <button onClick={() => dropCourse(course.id)}>Drop</button>
+              <button className="drop-button" onClick={() => dropCourse(course.id)}>  
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
             </div>
           ))}
         </div>
       )}
-
       {/* Render course content if available */}
       {courseContent && (
         <div>
           <h2>Course Content</h2>
           {/* Render the content here */}
+          <ul>
+            {courseContent.lectures.map(lecture => (
+              <li key={lecture.id}>
+                <h3>{lecture.title}</h3>
+                <p>{lecture.description}</p>
+              </li>
+            ))}
+          </ul>
+          <h3>Notes</h3>
+          <p>{courseContent.notes}</p>
+          <h3>Modules</h3>
+          <ul>
+            {courseContent.modules.map(module => (
+              <li key={module.id}>
+                <h4>{module.title}</h4>
+                <p>{module.description}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </div>
@@ -134,3 +174,4 @@ const MyCourses = () => {
 };
 
 export default MyCourses;
+
