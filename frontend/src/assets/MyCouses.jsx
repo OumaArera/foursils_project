@@ -7,7 +7,9 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 const MY_COURSES_URL = "http://127.0.0.1:5000/user/my/courses";
 const COURSE_CONTENT_URL = "http://127.0.0.1:5000/user/";
 
-const DROP_COURSE_URL = "http://127.0.0.1:5000/user/drop/course";
+
+// const DROP_COURSE_URL = "http://127.0.0.1:5000/user/drop/course";
+
 const DROP_COURSE_URL = "http://127.0.0.1:5000/user/drop/course"
 
 
@@ -65,7 +67,9 @@ const MyCourses = () => {
   // Fetch course content when "Start" button is clicked
   const startCourse = async (courseId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/user/${courseId}`, {
+
+      const response = await fetch(`${COURSE_CONTENT_URL}/${courseId}`, {
+
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${tokenDetails}`
@@ -103,9 +107,9 @@ const MyCourses = () => {
         throw new Error('Failed to drop course.');
 
 
-      } else {
-        console.error('Failed to drop co
-      }
+
+      } 
+
     } catch (error) {
       // Set error message if fetch fails
       console.error('Error dropping course:', error);
@@ -176,3 +180,4 @@ const MyCourses = () => {
 };
 
 export default MyCourses;
+
