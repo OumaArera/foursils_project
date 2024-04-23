@@ -140,24 +140,26 @@ const CourseDisplay = () => {
       {/* Search message and enrollment status messages */}
       {searchMessage && <p className="error-message">{searchMessage}</p>}
       {enrollmentStatus && <p className="error-message">{enrollmentStatus}</p>}
+      
       {/* Display available courses */}
       <div className="course-cards">
-        {courses.length === 0 ? (
-          <p className="error-message">No courses available.</p>
-        ) : (
-          courses.map(course => (
-            <div key={course.id} className="course-card">
-              <h3>{course.title}</h3>
-              <p>{course.description}</p>
-              {/* Check if course is already enrolled */}
-              {enrolledCourses.some(enrolledCourse => enrolledCourse.id === course.id) ? (
-                <button disabled>Enrolled</button>
-              ) : (
-                <button onClick={() => enrollCourse(course.id)}>Enroll</button>
-              )}
-            </div>
-          ))
-        )}
+      {courses.length !== 0 ? (
+  courses.map(course => (
+    <div key={course.id} className="course-card">
+      <h3>{course.title}</h3>
+      <p>{course.description}</p>
+      {/* Check if course is already enrolled */}
+      {enrolledCourses.some(enrolledCourse => enrolledCourse.id === course.id) ? (
+        <button disabled>Enrolled</button>
+      ) : (
+        <button onClick={() => enrollCourse(course.id)}>Enroll</button>
+      )}
+    </div>
+  ))
+) : (
+  <p className="error-message">No courses available.</p>
+)}
+
       </div>
       {/* Display enrolled courses */}
       <div className="my-courses">
