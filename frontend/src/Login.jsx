@@ -16,12 +16,18 @@ function Login() {
   const [error, setError] = useState("");
   const [role, setRole] = useState("");
   const [create, setCreate] = useState(1);
-  const [myCourses, setMyCourses] = useState(false)
+  const [myCourses, setMyCourses] = useState(false);
 
   useEffect(() => {
     const storedRole = localStorage.getItem("role");
     if (storedRole) {
-      setRole(JSON.parse(storedRole));
+      try {
+        setRole(JSON.parse(storedRole));
+      } catch (error) {
+        console.error("Error parsing stored role:", error);
+      }
+    } else {
+      console.warn("No role found in local storage.");
     }
   }, []);
 
@@ -92,10 +98,9 @@ function Login() {
     localStorage.removeItem("role");
   };
 
-  const handleMyCourses = () =>{
-    setMyCourses(prevState => !prevState);
-    // setMyCourses(true)
-  }
+  const handleMyCourses = () => {
+    setMyCourses((prevState) => !prevState);
+  };
 
   return (
     <div>
@@ -134,28 +139,35 @@ function Login() {
           </div>
           {role === "instructor" && (
             <div>
-              <button id = "course-crt" onClick={handleCreateCourse}>Course</button>
+              <button id="course-crt" onClick={handleCreateCourse}>
+                Course
+              </button>
               {create === 2 && <CourseForm />}
-              <button id = "module-crt" onClick={handleCreateModule}>Module</button>
+              <button id="module-crt" onClick={handleCreateModule}>
+                Module
+              </button>
               {create === 3 && <ModuleForm />}
-              <button id = "lecture-crt" onClick={handleCreateLecture}>Lecture</button>
+              <button id="lecture-crt" onClick={handleCreateLecture}>
+                Lecture
+              </button>
               {create === 4 && <LectureForm />}
-              <button id = "notes-crt" onClick={handleCreateNotes}>Notes</button>
+              <button id="notes-crt" onClick={handleCreateNotes}>
+                Notes
+              </button>
               {create === 5 && <NotesForm />}
             </div>
           )}
           {/* Student */}
           {role === "student" && (
             <div>
-
               <div>
-              {/* {<SearchCourses />} */}
-              {!myCourses && <CourseDetails />}
+                {/* {<SearchCourses />} */}
+                {!myCourses && <CourseDetails />}
                 {myCourses && <MyCourses />}
               </div>
-              <button id = "course-crt" onClick={handleMyCourses}>My Courses</button>
-              {/* {myCourses ? "Show All Courses" : "My Courses"} */}
-              {/* {myCourses && <MyCourses />} */}
+              <button id="course-crt" onClick={handleMyCourses}>
+                My Courses
+              </button>
             </div>
           )}
         </div>
@@ -165,7 +177,3 @@ function Login() {
 }
 
 export default Login;
-
-
-
-
