@@ -6,7 +6,12 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 // Define API endpoints
 const MY_COURSES_URL = "http://127.0.0.1:5000/user/my/courses";
 const COURSE_CONTENT_URL = "http://127.0.0.1:5000/user/";
-const DROP_COURSE_URL = "http://127.0.0.1:5000/user/drop/course";
+
+
+// const DROP_COURSE_URL = "http://127.0.0.1:5000/user/drop/course";
+
+const DROP_COURSE_URL = "http://127.0.0.1:5000/user/drop/course"
+
 
 const MyCourses = () => {
   // State variables
@@ -62,7 +67,9 @@ const MyCourses = () => {
   // Fetch course content when "Start" button is clicked
   const startCourse = async (courseId) => {
     try {
-      const response = await fetch(`http://127.0.0.1:5000/user/${courseId}`, {
+
+      const response = await fetch(`${COURSE_CONTENT_URL}/${courseId}`, {
+
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${tokenDetails}`
@@ -91,13 +98,18 @@ const MyCourses = () => {
       if (response.ok) {
         // Update courses list without the dropped course
         setCourses(prevCourses => prevCourses.filter(course => course.id !== courseId));
+
         // Set success message
         setDropMessage('Course dropped successfully.');
       } else {
         // Set error message if response is not OK
         setDropMessage('Failed to drop course.');
         throw new Error('Failed to drop course.');
-      }
+
+
+
+      } 
+
     } catch (error) {
       // Set error message if fetch fails
       console.error('Error dropping course:', error);
@@ -168,3 +180,4 @@ const MyCourses = () => {
 };
 
 export default MyCourses;
+

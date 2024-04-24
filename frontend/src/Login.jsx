@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+// import { useHistory } from 'react-router-dom';
 const LOGIN_URL = "http://127.0.0.1:5000/user/signin";
 import ModuleForm from "./assets/Module";
 import LectureForm from "./assets/Lecture";
@@ -9,7 +10,9 @@ import CourseDetails from "./assets/CoursesDisplay";
 import MyCourses from "./assets/MyCouses";
 // import SearchCourses from "./assets/SearchCourses";
 
+
 function Login() {
+  // const history = useHistory();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -21,6 +24,7 @@ function Login() {
   useEffect(() => {
     const storedRole = localStorage.getItem("role");
     if (storedRole) {
+
       try {
         setRole(JSON.parse(storedRole));
       } catch (error) {
@@ -28,6 +32,7 @@ function Login() {
       }
     } else {
       console.warn("No role found in local storage.");
+
     }
   }, []);
 
@@ -62,6 +67,9 @@ function Login() {
         localStorage.setItem("user_id", JSON.stringify(data.user_id));
         localStorage.setItem("role", JSON.stringify(data.role));
         setIsLoggedIn(true);
+        // history.push('/');
+
+
       } else {
         throw new Error("Failed to authenticate");
       }
@@ -106,7 +114,6 @@ function Login() {
     <div>
       {!isLoggedIn ? (
         <div className="container">
-          <h1>Welcome Home</h1>
           <form onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email">Email:</label>

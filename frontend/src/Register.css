@@ -1,9 +1,83 @@
+<<<<<<< HEAD
+.register-container {
 
-/* :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  
+  .register-form {
+    width: 1000px;
+    padding: 50px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .register-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .register-form label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .register-form select,
+  .register-form input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 1px;
+  }
+  
+  .register-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .register-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  .inputsignup {
+    display:flex;
+    align-items: center;
+    width: 100%;
+    gap: 2em;
+  }
+  .inputsignup label{
+    margin: 0;
+    padding: 0;
+    width: 17%;
+    display: flex;
+    justify-content: left;
+    font-size: 0.9em;
+  }
+  .inputsignup input{
+    width: 83%;
 
+  }
+  #username, #first_name, #middle_name, #last_name, #reg_number, #staff_number{
+    width: 82%;
+  }
+=======
+=======
 
 @media (prefers-color-scheme: light) {
   :root {
@@ -23,6 +97,7 @@
   background-color: rgb(231, 185, 32);
   padding: 10px;
   width: 100%;
+>>>>>>> e6ce359 (feat: done)
   display: flex;
   flex-direction: row;
   position: fixed;
@@ -71,6 +146,14 @@
   font-weight: bold;
 }
 
+.register-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
 
 label {
   display: block;
@@ -82,7 +165,7 @@ input[type='text'],
 input[type='email'],
 input[type='password'],
 select {
-  width: 200px;
+  width: 70%;
   padding: 8px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -172,76 +255,9 @@ body {
   margin-top: 20px;
 }
 
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-} */
-
-/* Tutor.css */
-
-body {
-  background-color: #bface2;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.tutor-container {
-  background-color: #ece6f6;
-  color: black;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
-  width: 80%; /* Ensure the container retains its size */
-}
-
-.header {
-  font-size: 2em;
-  color: black;
-}
-
-.buttons-top {
-  display: flex;
-  justify-content: center; /* Center the buttons horizontally */
-  align-items: center; /* Center the buttons vertically */
-  margin-top: 20px;
-  width: 100%;
-}
-
-.button {
-  padding: 10px 20px;
-  margin: 0 10px; /* Add space between buttons */
-  background-color: #8a2be2;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.button:hover {
-  background-color: #6a1b9a;
-}
-
-.form-container {
-  margin-top: 20px;
-}
-
 form {
   background-color: #fff;
   padding: 20px;
-
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
@@ -270,8 +286,13 @@ form input[type="datetime-local"] {
 
 form textarea {
   resize: vertical; /* Allow vertical resizing */
-
 }
+<<<<<<< HEAD
+#username, #first_name, #middle_name, #last_name, #reg_number, #staff_number{
+  width: 82%;
+}
+
+=======
 
 form button[type="submit"] {
   padding: 10px 20px;
@@ -285,20 +306,10 @@ form button[type="submit"] {
 
 form button[type="submit"]:hover {
   background-color: #6a1b9a;
-
 }
 
-form button[type="submit"] {
-  padding: 10px 20px;
-  background-color: #8a2be2;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
+.error-message {
+  color: red;
+  margin-top: 10px;
 }
-
-form button[type="submit"]:hover {
-  background-color: #6a1b9a;
-}
-
+>>>>>>> e6ce359 (feat: done)

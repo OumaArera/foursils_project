@@ -1,7 +1,15 @@
 #logout-btn{
+<<<<<<< HEAD
     right: 100px;
     top: 150px;
     position:fixed;
+=======
+>>>>>>> e6ce359 (feat: done)
+    right: 20px;
+    top: 90px;
+    position: absolute;
+    color: whitesmoke;
+
     font-size: 1.2vw;
     padding: 8px 12px;
     background-color: #6a1b9a;
@@ -11,8 +19,8 @@
 }
 
 #course-crt{
-    right: 100px;
-    top: 250px;
+    left: 1px;
+    top: 90px;
     position: absolute;
     font-size: 1.2vw;
     padding: 8px 12px;
