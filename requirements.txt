@@ -112,7 +112,7 @@ typing_extensions==4.10.0
 # ufw==0.36.1
 # unattended-upgrades==0.1
 urllib3==1.26.5
-usb-creator==0.3.7
+# usb-creator==0.3.7
 vboxapi==1.0
 virtualenv==20.25.1
 virtualenv-clone==0.3.0
