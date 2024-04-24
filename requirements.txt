@@ -19,7 +19,7 @@ decorator==5.1.1
 distlib==0.3.8
 distro==1.7.0
 distro-info==1.0
-duplicity==0.8.21
+duplicity==2.2.2
 exceptiongroup==1.2.0
 executing==2.0.1
 Faker==24.1.0
