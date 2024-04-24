@@ -103,7 +103,7 @@ six==1.16.0
 SQLAlchemy==2.0.29
 SQLAlchemy-serializer==1.4.12
 stack-data==0.6.3
-systemd-python==234
+# systemd-python==234
 tomli==2.0.1
 traitlets==5.14.2
 typing_extensions==4.10.0
