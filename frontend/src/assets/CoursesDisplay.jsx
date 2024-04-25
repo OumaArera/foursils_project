@@ -353,11 +353,12 @@ const CourseDisplay = () => {
 
 
       {/* Enrollment status message */}
-      {enrollmentStatus && <p>{enrollmentStatus}<
+      {enrollmentStatus && <p>{enrollmentStatus}</p>}
     </div>
   );
 };
 
 export default CourseDisplay;
+
 
 
